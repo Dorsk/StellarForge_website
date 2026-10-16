@@ -242,7 +242,7 @@ export const FR = {
   'media.keyart': 'Illustration principale',
   'media.logo': 'Logo',
   'media.shots': 'Captures d\'écran',
-  'media.shotsSoon': 'Les captures du jeu arrivent avec les prochaines versions.',
+  'media.shotFleet': 'Vingt joueurs et leurs vaisseaux rejoignent Terrane et son usine',
   'media.facts': 'Fiche du jeu',
   'media.fact.title': 'Titre',
   'media.fact.genre': 'Genre',

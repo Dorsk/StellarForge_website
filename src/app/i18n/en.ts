@@ -234,7 +234,7 @@ export const EN: Record<TKey, string> = {
   'media.keyart': 'Key art',
   'media.logo': 'Logo',
   'media.shots': 'Screenshots',
-  'media.shotsSoon': 'In-game screenshots are coming with the next versions.',
+  'media.shotFleet': 'Twenty players and their ships head for Terrane and its factory',
   'media.facts': 'Fact sheet',
   'media.fact.title': 'Title',
   'media.fact.genre': 'Genre',
