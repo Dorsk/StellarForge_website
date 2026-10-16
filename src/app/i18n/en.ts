@@ -230,7 +230,7 @@ export const EN: Record<TKey, string> = {
   'media.keyart': 'Key art',
   'media.logo': 'Logo',
   'media.shots': 'Screenshots',
-  'media.shotsLede': 'Images from the game in development, with graphics set to Ultra.',
+  'media.shotsLede': 'Images from the game in development.',
   'media.shot.factory': "Four players at work in the middle of Terrane's factory",
   'media.shot.takeoff': "A shuttle takes off from the base",
   'media.shot.probes': "Probe routes leave the factory for space",

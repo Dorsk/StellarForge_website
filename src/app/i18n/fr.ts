@@ -238,7 +238,7 @@ export const FR = {
   'media.keyart': 'Illustration principale',
   'media.logo': 'Logo',
   'media.shots': 'Captures d\'écran',
-  'media.shotsLede': 'Images tirées du jeu en développement, avec ses graphismes réglés sur Ultra.',
+  'media.shotsLede': 'Images tirées du jeu en développement.',
   'media.shot.factory': "Quatre joueurs au travail au milieu de l'usine de Terrane",
   'media.shot.takeoff': "Une navette décolle de la base",
   'media.shot.probes': "Des routes de sondes partent de l'usine vers l'espace",
