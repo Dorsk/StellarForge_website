@@ -93,7 +93,7 @@ export const EN: Record<TKey, string> = {
   'game.space.cargo': '{n} cargo slots',
   'game.probes.title': 'Probes',
   'game.probes.text': 'One probe port per planet, and resources move on their own. Transport drones and automatic cargo ships supply your factories from other worlds.',
-  'game.coop.title': 'Together',
+  'game.coop.title': 'Co-op with up to 50 players',
   'game.coop.text': 'Host a new game or a save, and invite people with a code or an address. From 2 to 50 players, as the host decides. Everyone keeps their own inventory; technologies, factories and the galaxy are shared. You see the others with their nickname, on the ground and in flight.',
   'game.controls.title': 'Default controls',
   'game.controls.note': 'Keys are physical: ZQSD on an AZERTY keyboard is WASD on QWERTY. Everything can be rebound in the settings.',

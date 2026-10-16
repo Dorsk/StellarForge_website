@@ -95,7 +95,7 @@ export const FR = {
   'game.space.cargo': 'soute de {n}',
   'game.probes.title': 'Les sondes',
   'game.probes.text': 'Un port de sondes par planète, et les ressources circulent toutes seules. Les drones de transport et les cargos automatiques ravitaillent vos usines depuis les autres mondes.',
-  'game.coop.title': 'À plusieurs',
+  'game.coop.title': "Coopération jusqu'à 50 joueurs",
   'game.coop.text': 'Hébergez une nouvelle partie ou une sauvegarde, et invitez avec un code ou une adresse. De 2 à 50 joueurs, au choix de l\'hôte. Chacun garde son inventaire ; technologies, usines et galaxie sont communes. Vous voyez les autres avec leur pseudo, au sol comme en vol.',
   'game.controls.title': 'Commandes par défaut',
   'game.controls.note': 'Touches physiques : ZQSD sur un clavier AZERTY correspond à WASD sur QWERTY. Tout se change dans les paramètres.',

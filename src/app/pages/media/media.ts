@@ -31,22 +31,6 @@ import { GameDataService } from '../../data/game-data';
       </figure>
     </div>
 
-    <section class="wrap gallery-section">
-      <h2 class="section-title">{{ 'media.shots' | t }}</h2>
-      <p class="section-lede">{{ 'media.shotsLede' | t }}</p>
-      <div class="gallery">
-        @for (shot of shots; track shot.file) {
-          <figure class="shot" [class.wide-shot]="shot.wide">
-            <a [href]="'images/screens/' + shot.file" target="_blank" rel="noopener">
-              <img [src]="'images/screens/' + shot.file" [width]="shot.w" [height]="shot.h" loading="lazy" [alt]="shot.caption | t" />
-            </a>
-            <figcaption><span>{{ shot.caption | t }}</span>
-              <a class="btn btn-ghost small" [href]="'images/screens/' + shot.file" [download]="'stellarforge-' + shot.file">{{ 'common.download' | t }}</a></figcaption>
-          </figure>
-        }
-      </div>
-    </section>
-
     <div class="wrap two">
       <section>
         <h2 class="section-title">{{ 'media.facts' | t }}</h2>
@@ -70,6 +54,24 @@ import { GameDataService } from '../../data/game-data';
         }
       </section>
     </div>
+
+    <section class="wrap shots-section">
+      <h2 class="section-title">{{ 'media.shots' | t }}</h2>
+      <p class="section-lede">{{ 'media.shotsLede' | t }}</p>
+      @for (group of shotGroups; track group[0].file) {
+        <div class="assets" [class.single]="group.length === 1">
+          @for (shot of group; track shot.file; let first = $first) {
+            <figure class="asset" [class.wide]="first && group.length > 1">
+              <a class="shot-link" [href]="'images/screens/' + shot.file" target="_blank" rel="noopener">
+                <img [src]="'images/screens/' + shot.file" [width]="shot.w" [height]="shot.h" loading="lazy" [alt]="shot.caption | t" />
+              </a>
+              <figcaption><span>{{ shot.caption | t }} · {{ shot.w }} × {{ shot.h }}</span>
+                <a class="btn btn-ghost small" [href]="'images/screens/' + shot.file" [download]="'stellarforge-' + shot.file">{{ 'common.download' | t }}</a></figcaption>
+            </figure>
+          }
+        </div>
+      }
+    </section>
   `,
   styles: `
     .assets { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
@@ -80,12 +82,11 @@ import { GameDataService } from '../../data/game-data';
     .logo-bg img { object-fit: contain; aspect-ratio: 1671 / 600; }
     figcaption { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; padding: 10px 14px; font: 400 12.5px var(--f-mono); color: var(--ink-dim); border-top: 1px solid var(--rule); }
     .small { padding: 5px 12px; font-size: 13px; }
-    .gallery-section { padding-top: 48px; }
-    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .wide-shot { grid-column: span 2; }
-    .shot { margin: 0; background: var(--hull); border: 1px solid var(--rule); display: grid; grid-template-rows: auto 1fr; min-width: 0; }
-    .shot img { display: block; width: 100%; height: clamp(180px, 19vw, 270px); object-fit: cover; }
-    .shot figcaption { align-items: flex-start; font: 400 14px var(--f-body); color: var(--ink-dim); }
+    .shots-section { padding-top: 56px; display: grid; gap: 16px; }
+    .shots-section .section-lede { margin-bottom: 8px; }
+    .assets.single { grid-template-columns: 1fr; }
+    .assets.single img { max-height: 560px; }
+    .shot-link { display: block; min-height: 0; }
     .two { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; padding-top: 48px; align-items: start; }
     .facts { margin: 12px 0 0; display: grid; border-top: 1px solid var(--rule); }
     .facts div { display: grid; grid-template-columns: 170px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
@@ -99,9 +100,6 @@ import { GameDataService } from '../../data/game-data';
       .assets, .two { grid-template-columns: 1fr; }
       .asset.wide { grid-row: auto; }
       .facts div { grid-template-columns: 1fr; gap: 0; }
-      .gallery { grid-template-columns: 1fr; }
-      .wide-shot { grid-column: auto; }
-      .shot img { height: auto; aspect-ratio: 16 / 9; }
     }
   `,
 })
@@ -109,14 +107,19 @@ export class MediaPage {
   protected readonly i18n = inject(I18n);
   protected readonly data = inject(GameDataService);
   protected readonly copied = signal<TKey | null>(null);
-  protected readonly shots: { file: string; w: number; h: number; caption: TKey; wide?: boolean }[] = [
-    { file: 'usine.jpg', w: 2560, h: 1440, caption: 'media.shot.factory', wide: true },
-    { file: 'decollage.jpg', w: 2560, h: 1440, caption: 'media.shot.takeoff' },
-    { file: 'sondes.jpg', w: 2560, h: 1440, caption: 'media.shot.probes' },
-    { file: 'colonisation.jpg', w: 2560, h: 1440, caption: 'media.shot.colony' },
-    { file: 'nuit.jpg', w: 2560, h: 1440, caption: 'media.shot.night' },
-    { file: 'technologies.jpg', w: 1920, h: 1080, caption: 'media.shot.tech' },
-    { file: 'carte-galaxie.jpg', w: 1920, h: 1080, caption: 'media.shot.map', wide: true },
+  /** Même mise en page que le haut de la page : une grande image et deux petites à droite. */
+  protected readonly shotGroups: { file: string; w: number; h: number; caption: TKey }[][] = [
+    [
+      { file: 'usine.jpg', w: 2560, h: 1440, caption: 'media.shot.factory' },
+      { file: 'decollage.jpg', w: 2560, h: 1440, caption: 'media.shot.takeoff' },
+      { file: 'nuit.jpg', w: 2560, h: 1440, caption: 'media.shot.night' },
+    ],
+    [
+      { file: 'colonisation.jpg', w: 2560, h: 1440, caption: 'media.shot.colony' },
+      { file: 'sondes.jpg', w: 2560, h: 1440, caption: 'media.shot.probes' },
+      { file: 'technologies.jpg', w: 1920, h: 1080, caption: 'media.shot.tech' },
+    ],
+    [{ file: 'carte-galaxie.jpg', w: 1920, h: 1080, caption: 'media.shot.map' }],
   ];
   protected readonly descriptions: { title: TKey; text: TKey }[] = [
     { title: 'media.short', text: 'media.shortText' },
