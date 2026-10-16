@@ -25,14 +25,15 @@ export class I18n {
     try { localStorage.setItem(STORAGE_KEY, lang); } catch { /* stockage indisponible */ }
   }
 
-  /** Langue enregistrée, sinon celle du navigateur (français par défaut). */
+  /** Langue enregistrée, sinon français si le navigateur préfère le français, anglais dans tous les autres cas. */
   preferred(): Lang {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (isLang(saved)) return saved;
     } catch { /* stockage indisponible */ }
-    const nav = this.document.defaultView?.navigator.language ?? 'fr';
-    return nav.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+    const nav = this.document.defaultView?.navigator;
+    const first = nav?.languages?.[0] ?? nav?.language ?? '';
+    return first.toLowerCase().startsWith('fr') ? 'fr' : 'en';
   }
 
   t(key: TKey, params?: Record<string, string | number>): string {

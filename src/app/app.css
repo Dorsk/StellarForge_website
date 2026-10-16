@@ -28,17 +28,16 @@
   content: ""; position: absolute; left: 11px; right: 11px; bottom: 2px; height: 2px;
   background: var(--cyan); box-shadow: 0 0 10px var(--cyan);
 }
-.lang {
-  display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink-dim);
-  border: 1px solid var(--rule); padding: 6px 10px; border-radius: 3px; font-size: 13px; flex: none;
+.langs { display: flex; gap: 4px; flex: none; }
+.flag {
+  display: block; padding: 5px; border: 1px solid transparent; border-radius: 3px;
+  opacity: .45; filter: saturate(.6); transition: opacity .15s, filter .15s, border-color .15s;
 }
-.lang:hover { color: var(--ink); border-color: var(--volt); }
-.lang-code { font: 600 11px var(--f-mono); letter-spacing: .1em; color: var(--cyan); }
+.flag svg { display: block; width: 24px; height: 16px; border-radius: 2px; }
+.flag:hover { opacity: 1; filter: none; border-color: var(--volt); }
+.flag.current { opacity: 1; filter: none; border-color: var(--rule); cursor: default; }
 .burger { display: none; }
 
-@media (max-width: 1080px) {
-  .lang-name { display: none; }
-}
 @media (max-width: 920px) {
   .bar { gap: 12px; }
   .main-nav {
@@ -50,7 +49,7 @@
   .open .main-nav { display: flex; }
   .main-nav a { padding: 12px 4px; font-size: 16px; border-bottom: 1px solid var(--rule); border-radius: 0; }
   .main-nav a.active::after { left: auto; right: 4px; top: 50%; bottom: auto; width: 8px; height: 8px; transform: translateY(-50%) rotate(45deg); }
-  .lang { margin-left: auto; }
+  .langs { margin-left: auto; }
   .burger {
     display: grid; gap: 5px; place-content: center; width: 42px; height: 42px; background: none;
     border: 1px solid var(--rule); border-radius: 3px; cursor: pointer;
