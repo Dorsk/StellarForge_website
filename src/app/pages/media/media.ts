@@ -15,9 +15,9 @@ import { GameDataService } from '../../data/game-data';
 
     <div class="wrap assets">
       <figure class="asset wide">
-        <img src="images/screens/flotte.jpg" width="2560" height="1440" loading="lazy" [alt]="'media.shotFleet' | t" />
+        <img src="images/screens/flotte-logo.jpg" width="2560" height="1440" loading="lazy" [alt]="'media.shotFleet' | t" />
         <figcaption><span>{{ 'media.shots' | t }} · {{ 'media.shotFleet' | t }} · 2560 × 1440</span>
-          <a class="btn btn-ghost small" href="images/screens/flotte.png" download="stellarforge-flotte.png">{{ 'common.download' | t }}</a></figcaption>
+          <a class="btn btn-ghost small" href="images/screens/flotte-logo.png" download="stellarforge-flotte.png">{{ 'common.download' | t }}</a></figcaption>
       </figure>
       <figure class="asset">
         <img src="images/panorama.png" width="1672" height="940" loading="lazy" alt="{{ 'media.keyart' | t }}" />
@@ -66,7 +66,7 @@ import { GameDataService } from '../../data/game-data';
                 <img [src]="'images/screens/' + shot.file" [width]="shot.w" [height]="shot.h" loading="lazy" [alt]="shot.caption | t" />
               </a>
               <figcaption><span>{{ shot.caption | t }} · {{ shot.w }} × {{ shot.h }}</span>
-                <a class="btn btn-ghost small" [href]="'images/screens/' + shot.file" [download]="'stellarforge-' + shot.file">{{ 'common.download' | t }}</a></figcaption>
+                <a class="btn btn-ghost small" [href]="'images/screens/' + shot.file" [download]="'stellarforge-' + shot.file.replace('-logo', '')">{{ 'common.download' | t }}</a></figcaption>
             </figure>
           }
         </div>
@@ -110,16 +110,16 @@ export class MediaPage {
   /** Même mise en page que le haut de la page : une grande image et deux petites à droite. */
   protected readonly shotGroups: { file: string; w: number; h: number; caption: TKey }[][] = [
     [
-      { file: 'usine.jpg', w: 2560, h: 1440, caption: 'media.shot.factory' },
-      { file: 'decollage.jpg', w: 2560, h: 1440, caption: 'media.shot.takeoff' },
-      { file: 'nuit.jpg', w: 2560, h: 1440, caption: 'media.shot.night' },
+      { file: 'sondes-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.probes' },
+      { file: 'decollage-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.takeoff' },
+      { file: 'nuit-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.night' },
     ],
     [
-      { file: 'colonisation.jpg', w: 2560, h: 1440, caption: 'media.shot.colony' },
-      { file: 'sondes.jpg', w: 2560, h: 1440, caption: 'media.shot.probes' },
-      { file: 'technologies.jpg', w: 1920, h: 1080, caption: 'media.shot.tech' },
+      { file: 'carte-galaxie-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.map' },
+      { file: 'usine-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.factory' },
+      { file: 'technologies-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.tech' },
     ],
-    [{ file: 'carte-galaxie.jpg', w: 1920, h: 1080, caption: 'media.shot.map' }],
+    [{ file: 'colonisation-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.colony' }],
   ];
   protected readonly descriptions: { title: TKey; text: TKey }[] = [
     { title: 'media.short', text: 'media.shortText' },
