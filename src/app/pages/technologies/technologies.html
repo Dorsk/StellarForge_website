@@ -1,0 +1,131 @@
+<header class="wrap page-head compact">
+  <h1 class="page-title">{{ 'tech.title' | t }}</h1>
+  <p class="lede">{{ 'tech.lede' | t: { n: index()?.data?.techs?.length ?? '…' } }}</p>
+  @if (i18n.lang() === 'en') { <p class="note">{{ 'common.frenchOnly' | t }}</p> }
+</header>
+
+@if (index(); as idx) {
+  <div class="wrap toolbar">
+    <label class="search">
+      <span class="sr-only">{{ 'common.search' | t }}</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+      <input id="tech-search" type="search" [value]="query()" (input)="query.set($any($event.target).value)"
+             (keydown.enter)="onSearchEnter()" [placeholder]="'tech.searchPlaceholder' | t" autocomplete="off" />
+      @if (query()) { <button type="button" (click)="query.set('')" [attr.aria-label]="'common.clear' | t">×</button> }
+    </label>
+    @if (matches(); as m) {
+      <span class="count" [class.zero]="!m.size">{{ (m.size ? 'tech.matches' : 'tech.noMatch') | t: { n: m.size } }}</span>
+    }
+    <div class="trees" role="group" [attr.aria-label]="'tech.filter' | t">
+      @for (tree of idx.data.trees; track tree.id) {
+        <button type="button" class="tree-toggle" [style.--tc]="tree.color" [class.off]="hiddenTrees().has(tree.id)"
+                [attr.aria-pressed]="!hiddenTrees().has(tree.id)" (click)="toggleTree(tree.id)">{{ tree.name }}</button>
+      }
+    </div>
+  </div>
+
+  <div class="stage" [class.has-detail]="detail()">
+    <div class="scroller">
+      <div class="mural" #mural [class.lineage]="lit()" [class.searching]="matches()"
+           [style.grid-template-columns]="'26px repeat(' + idx.tiers + ', 184px)'"
+           [style.grid-template-rows]="'30px repeat(' + lanes().length + ', auto)'"
+           (mouseleave)="hovered.set(null)">
+        <svg class="links" [attr.width]="size().w" [attr.height]="size().h" aria-hidden="true">
+          @for (l of links(); track l.from + '>' + l.to) {
+            <path [attr.d]="l.d" [attr.stroke]="l.color" [class.lit]="lit()?.has(l.from) && lit()?.has(l.to)" />
+          }
+        </svg>
+        @for (k of tiers(); track k) {
+          <div class="tier-h" [style.grid-row]="1" [style.grid-column]="k + 2">{{ 'tech.tier' | t: { n: k } }}</div>
+        }
+        @for (lane of lanes(); track lane.tree.id) {
+          <div class="lane-bg" [style.grid-row]="lane.row" [style.--tc]="lane.tree.color"></div>
+          <div class="lane-label" [style.grid-row]="lane.row" [style.--tc]="lane.tree.color"><span>{{ lane.tree.name }}</span></div>
+          @for (cell of lane.cells; track cell.tier) {
+            <div class="cell" [style.grid-row]="lane.row" [style.grid-column]="cell.tier + 2">
+              @for (t of cell.techs; track t.id) {
+                <button type="button" class="tech" [id]="'t-' + t.id" [style.--tc]="lane.tree.color"
+                        [class.lit]="lit()?.has(t.id)" [class.self]="selected() === t.id"
+                        [class.match]="matches()?.has(t.id)" [attr.aria-pressed]="selected() === t.id"
+                        (click)="select(t.id)" (mouseenter)="hovered.set(t.id)" (focus)="hovered.set(null)">{{ t.name }}</button>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <aside class="detail" [class.open]="detail()" aria-live="polite">
+      @if (detail(); as t) {
+        <div class="detail-card" [style.--tc]="idx.treeById[t.tree]?.color">
+          <button type="button" class="close" (click)="selected.set(null)" [attr.aria-label]="'tech.close' | t">×</button>
+          <p class="where">{{ idx.treeById[t.tree]?.name }} · {{ 'tech.tier' | t: { n: idx.tier[t.id] } }}</p>
+          <h2>{{ t.name }}</h2>
+          @if (t.description) { <p class="desc">{{ t.description }}</p> }
+
+          <p class="label">{{ 'common.cost' | t }}</p>
+          @if (hasKeys(t.cost)) { <sf-items [index]="idx" [qty]="t.cost" /> }
+          @else { <p class="free">{{ 'tech.freeTech' | t }}</p> }
+
+          <p class="label">{{ 'tech.prerequisites' | t }}</p>
+          @if (t.prerequisites.length) {
+            <div class="jumps">
+              @for (p of t.prerequisites; track p) {
+                <button type="button" [style.--tc]="treeOf(idx, p)?.color" (click)="goTo(p)">{{ idx.techById[p].name }}</button>
+              }
+            </div>
+          } @else { <p class="free">{{ 'tech.noPrerequisite' | t }}</p> }
+
+          @if (t.buildings.length || t.recipes.length || t.ships.length || t.upgrades.length) {
+            <p class="label">{{ 'tech.unlocks' | t }}</p>
+            <ul class="unlocks">
+              @for (id of t.buildings; track id) {
+                <li><span class="tag b">{{ 'tech.tag.building' | t }}</span>
+                  <div><strong>{{ idx.buildingById[id]?.name ?? id }}</strong>
+                    @if (buildingInfo(idx.buildingById[id]); as info) { <span class="sub">{{ info }}</span> }</div></li>
+              }
+              @for (id of t.recipes; track id) {
+                @let r = idx.recipeById[id];
+                <li><span class="tag r">{{ 'tech.tag.recipe' | t }}</span>
+                  <div><strong>{{ r?.name ?? id }}</strong>
+                    @if (r) {
+                      <div class="recipe">
+                        <sf-items [index]="idx" [qty]="r.inputs" /><span class="arrow">→</span><sf-items [index]="idx" [qty]="r.outputs" />
+                      </div>
+                      <span class="sub">{{ r.duration | num }} {{ 'common.seconds' | t }} · {{ idx.buildingById[r.building]?.name }}</span>
+                    }
+                  </div></li>
+              }
+              @for (id of t.ships; track id) {
+                <li><span class="tag s">{{ 'tech.tag.ship' | t }}</span>
+                  <div><strong>{{ idx.shipById[id]?.name ?? id }}</strong>
+                    <span class="sub">{{ 'game.space.cargo' | t: { n: idx.shipById[id]?.cargoSlots ?? 0 } }} · {{ idx.buildingById[idx.shipById[id]?.shipyard ?? '']?.name }}</span></div></li>
+              }
+              @for (id of t.upgrades; track id) {
+                <li><span class="tag u">{{ 'tech.tag.upgrade' | t }}</span>
+                  <div><strong>{{ idx.data.upgrades[id]?.name ?? id }}</strong>
+                    <span class="sub">{{ idx.data.upgrades[id]?.description }}</span></div></li>
+              }
+            </ul>
+          }
+
+          @if (idx.children[t.id]?.length) {
+            <p class="label">{{ 'tech.leadsTo' | t }}</p>
+            <div class="jumps">
+              @for (c of idx.children[t.id]; track c) {
+                <button type="button" [style.--tc]="treeOf(idx, c)?.color" (click)="goTo(c)">{{ idx.techById[c].name }}</button>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="empty">{{ 'tech.empty' | t }}</p>
+      }
+    </aside>
+  </div>
+  <p class="wrap hint">{{ 'tech.scrollHint' | t }}</p>
+} @else if (index() === null) {
+  <p class="wrap state">{{ 'common.error' | t }}</p>
+} @else {
+  <p class="wrap state">{{ 'common.loading' | t }}</p>
+}

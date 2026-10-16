@@ -1,0 +1,168 @@
+<header class="wrap page-head compact">
+  <h1 class="page-title">{{ 'codex.title' | t }}</h1>
+  <p class="lede">{{ 'codex.lede' | t }}</p>
+  @if (i18n.lang() === 'en') { <p class="note">{{ 'common.frenchOnly' | t }}</p> }
+</header>
+
+@if (index(); as idx) {
+  <div class="wrap">
+    <div class="toolbar">
+      <div class="tabs" role="tablist">
+        @for (t of tabs; track t.id) {
+          <button type="button" role="tab" [attr.aria-selected]="activeTab() === t.id" [class.on]="activeTab() === t.id"
+                  (click)="setTab(t.id)">{{ t.key | t }} <span class="n">{{ counts()[t.id] }}</span></button>
+        }
+      </div>
+      <label class="search">
+        <span class="sr-only">{{ 'common.search' | t }}</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+        <input id="codex-search" type="search" [value]="query()" (input)="query.set($any($event.target).value)"
+               [placeholder]="'codex.searchPlaceholder' | t" autocomplete="off" />
+        @if (query()) { <button type="button" (click)="query.set('')" [attr.aria-label]="'common.clear' | t">×</button> }
+      </label>
+    </div>
+
+    @if (focusInfo(); as f) {
+      <div class="focus" [style.--c]="f.color">
+        <div class="who"><span class="label">{{ 'codex.filterOn' | t }}</span>
+          <strong><i></i>{{ f.name }}</strong><span class="cat">{{ f.category | t }}</span></div>
+        <p><span class="k k-make">{{ 'codex.producedBy' | t }}</span> {{ f.sources || '—' }}</p>
+        <p><span class="k k-use">{{ 'codex.usedBy' | t }}</span> {{ f.uses }}</p>
+        <button type="button" class="btn btn-ghost small" (click)="follow(null)">{{ 'common.clear' | t }}</button>
+      </div>
+    }
+
+    <div class="panel-body" role="tabpanel">
+      @switch (activeTab()) {
+        @case ('buildings') {
+          @for (g of buildingGroups(); track g.name) {
+            <section class="group">
+              <h2 class="group-title">{{ g.name }}</h2>
+              <div class="cards">
+                @for (b of g.buildings; track b.id) {
+                  <article class="card" [style.--bc]="b.color" [class.make]="focus() && b.extracts.includes(focus()!)"
+                           [class.use]="focus() && !b.extracts.includes(focus()!)">
+                    <div class="top"><span class="sw"></span><h3>{{ b.name }}</h3></div>
+                    @if (b.description) { <p class="desc">{{ b.description }}</p> }
+                    @if (buildingStats(b); as st) {
+                      @if (st.length) {
+                        <div class="stats">@for (s of st; track s.key) {<span [class]="s.cls">{{ s.key | t }} <b>{{ s.value }}</b></span>}</div>
+                      }
+                    }
+                    <div class="row"><span class="label">{{ 'common.cost' | t }}</span>
+                      @if (hasKeys(b.cost)) { <sf-items [index]="idx" [qty]="b.cost" [clickable]="true" [active]="focus()" (pick)="follow($event)" /> }
+                      @else { <span class="free">{{ 'common.free' | t }}</span> }</div>
+                    @if (b.extracts.length) {
+                      <div class="row"><span class="label">{{ 'codex.extracts' | t }}</span>
+                        <sf-items [index]="idx" [ids]="b.extracts" [clickable]="true" [active]="focus()" (pick)="follow($event)" /></div>
+                    }
+                    @if (isGenerator(b)) {
+                      <div class="row"><span class="label">{{ 'codex.burns' | t }}</span>
+                        @if (b.fuels.length) { <sf-items [index]="idx" [ids]="b.fuels" [clickable]="true" [active]="focus()" (pick)="follow($event)" /> }
+                        @else { <span class="free">{{ 'codex.solar' | t }}</span> }</div>
+                    }
+                    @if (shipsOf(idx, b.id); as ships) {
+                      <div class="row"><span class="label">{{ 'codex.builds' | t }}</span><span>{{ ships }}</span></div>
+                    }
+                    @if (idx.recipesByBuilding[b.id]; as recs) {
+                      <div class="row"><span class="label">{{ 'codex.tab.recipes' | t }}</span>
+                        <a class="tlink" [routerLink]="[]" [queryParams]="{ tab: 'recipes' }" queryParamsHandling="merge">{{ 'codex.recipesCount' | t: { n: recs.length } }}</a></div>
+                    }
+                    <div class="row"><span class="label">{{ 'common.unlockedBy' | t }}</span>
+                      @if (idx.unlockedBy['b:' + b.id]; as t) {
+                        <a class="tlink" [style.color]="idx.treeById[t.tree]?.color" [routerLink]="['/', i18n.lang(), 'technologies']" [queryParams]="{ tech: t.id }">{{ t.name }}</a>
+                      } @else { <span class="free">{{ 'common.fromStart' | t }}</span> }</div>
+                  </article>
+                }
+              </div>
+            </section>
+          } @empty { <p class="state">{{ 'codex.nothing' | t }}</p> }
+        }
+
+        @case ('recipes') {
+          @for (g of recipeGroups(); track g.building.id) {
+            <section class="factory">
+              <header [style.--bc]="g.building.color">
+                <h2><span class="sw"></span>{{ g.building.name }}</h2>
+                <span class="stats"><span>{{ 'codex.recipesCount' | t: { n: g.recipes.length } }}</span>
+                  @if (g.building.powerUse) { <span class="pw-in"><b>{{ g.building.powerUse | num }}</b> kW</span> }</span>
+              </header>
+              @for (r of g.recipes; track r.id) {
+                <div class="rec" [class.make]="focus() && r.outputs[focus()!] !== undefined" [class.use]="focus() && r.inputs[focus()!] !== undefined">
+                  <sf-items [index]="idx" [qty]="r.inputs" [clickable]="true" [active]="focus()" (pick)="follow($event)" />
+                  <span class="arrow" aria-hidden="true">→</span>
+                  <sf-items [index]="idx" [qty]="r.outputs" [clickable]="true" [active]="focus()" (pick)="follow($event)" />
+                  <span class="meta"><span><b>{{ r.duration | num }}</b> {{ 'common.seconds' | t }}</span><span>{{ rate(r) }}</span></span>
+                  <span class="by">
+                    @if (idx.unlockedBy['r:' + r.id]; as t) {
+                      <a class="tlink" [style.color]="idx.treeById[t.tree]?.color" [routerLink]="['/', i18n.lang(), 'technologies']" [queryParams]="{ tech: t.id }">{{ t.name }}</a>
+                    }
+                  </span>
+                </div>
+              }
+            </section>
+          } @empty { <p class="state">{{ 'codex.nothing' | t }}</p> }
+        }
+
+        @case ('ships') {
+          <div class="cards">
+            @for (s of ships(); track s.id) {
+              <article class="card" [style.--bc]="s.color" [class.use]="focus()">
+                <div class="top"><span class="sw"></span><h3>{{ s.name }}</h3></div>
+                @if (s.description) { <p class="desc">{{ s.description }}</p> }
+                <div class="stats">
+                  <span>{{ 'codex.ship.cargo' | t }} <b>{{ s.cargoSlots }}</b></span>
+                  <span>{{ 'codex.ship.build' | t }} <b>{{ s.buildTime | num }}</b> {{ 'common.seconds' | t }}</span>
+                  <span><b>{{ s.reachable }}</b> {{ 'codex.ship.planets' | t }}</span>
+                </div>
+                <div class="row"><span class="label">{{ 'common.cost' | t }}</span>
+                  <sf-items [index]="idx" [qty]="s.cost" [clickable]="true" [active]="focus()" (pick)="follow($event)" /></div>
+                <div class="row"><span class="label">{{ 'codex.ship.yard' | t }}</span><span>{{ idx.buildingById[s.shipyard]?.name }}</span></div>
+                <div class="row"><span class="label">{{ 'common.unlockedBy' | t }}</span>
+                  @if (idx.unlockedBy['s:' + s.id]; as t) {
+                    <a class="tlink" [style.color]="idx.treeById[t.tree]?.color" [routerLink]="['/', i18n.lang(), 'technologies']" [queryParams]="{ tech: t.id }">{{ t.name }}</a>
+                  }</div>
+              </article>
+            }
+            @for (p of probes(); track p.probe.id) {
+              <article class="card" [style.--bc]="idx.data.items[p.probe.id]?.color ?? '#888'"
+                       [class.make]="focus() === p.probe.id" [class.use]="focus() && focus() !== p.probe.id">
+                <div class="top"><span class="sw"></span><h3>{{ p.probe.name }}</h3></div>
+                <p class="desc">{{ 'codex.probe.desc' | t }}</p>
+                <div class="stats">
+                  <span>{{ 'codex.ship.cargo' | t }} <b>{{ p.probe.cargoSlots }}</b>@if (p.probe.stackLimit) { × {{ p.probe.stackLimit }} }</span>
+                  <span><b>{{ p.probe.reachable }}</b> {{ 'codex.ship.planets' | t }}</span>
+                </div>
+                @if (p.recipe; as r) {
+                  <div class="row"><span class="label">{{ 'codex.probe.recipe' | t }}</span>
+                    <sf-items [index]="idx" [qty]="r.inputs" [clickable]="true" [active]="focus()" (pick)="follow($event)" /></div>
+                  <div class="row"><span class="label">{{ 'codex.recipe.factory' | t }}</span><span>{{ idx.buildingById[r.building]?.name }}</span></div>
+                  <div class="row"><span class="label">{{ 'common.unlockedBy' | t }}</span>
+                    @if (idx.unlockedBy['r:' + r.id]; as t) {
+                      <a class="tlink" [style.color]="idx.treeById[t.tree]?.color" [routerLink]="['/', i18n.lang(), 'technologies']" [queryParams]="{ tech: t.id }">{{ t.name }}</a>
+                    }</div>
+                }
+              </article>
+            }
+          </div>
+          @if (!ships().length && !probes().length) { <p class="state">{{ 'codex.nothing' | t }}</p> }
+        }
+
+        @case ('items') {
+          <div class="item-groups">
+            @for (g of itemGroups(); track g.cat) {
+              <section>
+                <h2 class="group-title">{{ catKey(g.cat) | t }} · {{ g.ids.length }}</h2>
+                <sf-items [index]="idx" [ids]="g.ids" [clickable]="true" [active]="focus()" (pick)="follow($event)" />
+              </section>
+            } @empty { <p class="state">{{ 'codex.nothing' | t }}</p> }
+          </div>
+        }
+      }
+    </div>
+  </div>
+} @else if (index() === null) {
+  <p class="wrap state">{{ 'common.error' | t }}</p>
+} @else {
+  <p class="wrap state">{{ 'common.loading' | t }}</p>
+}

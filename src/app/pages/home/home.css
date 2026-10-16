@@ -1,0 +1,70 @@
+.hero { position: relative; }
+.art { position: relative; max-height: min(78vh, 820px); overflow: hidden; }
+.art img { display: block; width: 100%; height: auto; aspect-ratio: 1672 / 940; object-fit: cover; object-position: 30% 20%; max-height: min(78vh, 820px); }
+.art::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(transparent, var(--void)); pointer-events: none; }
+.hero-row { position: relative; margin-top: -150px; display: flex; justify-content: flex-end; }
+.hero-panel {
+  max-width: 560px; display: grid; gap: 16px; justify-items: start;
+  background: color-mix(in srgb, var(--hull) 88%, transparent); backdrop-filter: blur(10px);
+  border: 1px solid var(--rule-strong); border-top: 2px solid var(--cyan); padding: 24px 26px 26px;
+  box-shadow: 0 20px 60px #000a;
+}
+.pitch { font-size: 18px; line-height: 1.55; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.tally { display: grid; grid-template-columns: repeat(5, 1fr); margin: 56px 0 0; border-block: 1px solid var(--rule); }
+.tally div { padding: 18px 16px; border-left: 1px solid var(--rule); display: flex; flex-direction: column-reverse; gap: 2px; }
+.tally div:first-child { border-left: 0; }
+.tally dd { margin: 0; font: 800 clamp(26px, 3.4vw, 40px)/1 var(--f-display); color: #f4f8ff; text-shadow: 0 0 18px #3a7bff70; font-variant-numeric: tabular-nums; }
+.tally dt { color: var(--ink-dim); font-size: 14px; }
+
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--rule); }
+.steps li { padding: 22px 22px 8px 0; display: grid; gap: 8px; align-content: start; position: relative; }
+.steps li + li { padding-left: 22px; border-left: 1px solid var(--rule); }
+.num { font: 600 13px var(--f-mono); color: var(--cyan); letter-spacing: .1em; }
+.steps h3 { font: 600 21px var(--f-body); }
+.steps p { color: var(--ink-dim); }
+
+.split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
+.calm ul { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+.calm li { display: flex; gap: 12px; align-items: baseline; font-size: 17px; }
+.calm li::before { content: ""; width: 8px; height: 8px; flex: none; background: var(--ok); transform: rotate(45deg) translateY(-2px); box-shadow: 0 0 8px var(--ok); }
+.latest {
+  display: grid; gap: 6px; text-decoration: none; color: var(--ink); background: var(--hull);
+  border: 1px solid var(--rule); padding: 20px 22px; transition: border-color .15s;
+}
+.latest:hover { border-color: var(--cyan); }
+.latest .ver { font: 600 13px var(--f-mono); color: var(--cyan); }
+.latest .ttl { font: 600 21px/1.25 var(--f-body); }
+.latest .date { color: var(--ink-faint); font-size: 14px; }
+.latest .more { margin-top: 8px; color: var(--cyan); font-weight: 500; }
+
+.dev {
+  display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: center; justify-content: space-between;
+  border: 1px solid var(--rule); background: linear-gradient(110deg, #12305a66, transparent 70%), var(--deep);
+  padding: 28px 30px;
+}
+.dev > div:first-child { max-width: 64ch; }
+.dev p { color: var(--ink-dim); }
+
+@media (max-width: 900px) {
+  .hero-row { margin-top: -40px; }
+  .hero-panel { max-width: none; }
+  .tally { grid-template-columns: repeat(3, 1fr); }
+  .tally div:nth-child(4) { border-left: 0; }
+  .tally div:nth-child(n + 4) { border-top: 1px solid var(--rule); }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .steps li:nth-child(3) { padding-left: 0; border-left: 0; }
+  .steps li:nth-child(n + 3) { border-top: 1px solid var(--rule); }
+  .split { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .hero-row { margin-top: -20px; }
+  .tally { grid-template-columns: 1fr 1fr; }
+  .tally div { border-left: 0; border-top: 1px solid var(--rule); }
+  .tally div:nth-child(even) { border-left: 1px solid var(--rule); }
+  .tally div:nth-child(-n + 2) { border-top: 0; }
+  .steps { grid-template-columns: 1fr; }
+  .steps li, .steps li + li { padding-left: 0; border-left: 0; }
+  .steps li + li { border-top: 1px solid var(--rule); }
+}

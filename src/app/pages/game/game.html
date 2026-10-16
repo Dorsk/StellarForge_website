@@ -1,0 +1,149 @@
+<header class="wrap page-head">
+  <p class="eyebrow">StellarForge</p>
+  <h1 class="page-title">{{ 'game.title' | t }}</h1>
+  <p class="lede">{{ 'game.lede' | t }}</p>
+  @if (i18n.lang() === 'en') { <p class="note">{{ 'common.frenchOnly' | t }}</p> }
+</header>
+
+@if (index(); as idx) {
+  <div class="wrap feature-list">
+    <section class="feature" id="crash">
+      <div class="txt">
+        <h2>{{ 'game.crash.title' | t }}</h2>
+        <p>{{ 'game.crash.text' | t }}</p>
+      </div>
+      <figure class="panel crash">
+        <img src="images/panorama.png" alt="" width="1672" height="940" loading="lazy" />
+      </figure>
+    </section>
+
+    <section class="feature" id="build">
+      <div class="txt">
+        <h2>{{ 'game.build.title' | t }}</h2>
+        <p>{{ 'game.build.text' | t }}</p>
+      </div>
+      <div class="panel">
+        <p class="label">{{ 'game.build.families' | t }}</p>
+        <dl class="families">
+          @for (f of families(); track f.name) {
+            <div><dt>{{ f.name }}</dt><dd>{{ f.buildings.join(' · ') }}</dd></div>
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="feature" id="automate">
+      <div class="txt">
+        <h2>{{ 'game.auto.title' | t }}</h2>
+        <p>{{ 'game.auto.text' | t }}</p>
+      </div>
+      <div class="panel">
+        <p class="label">{{ 'game.auto.chain' | t }}</p>
+        <ol class="chain">
+          @for (s of chain(); track s.output) {
+            <li [style.--bc]="s.color">
+              <span class="node">{{ s.building }}</span>
+              <sf-items [index]="idx" [ids]="[s.output]" />
+              <span class="rate"><b>{{ s.rate | num: 1 }}</b>{{ 'common.perMin' | t }}</span>
+            </li>
+          }
+        </ol>
+        <p class="hint">{{ 'game.auto.chainNote' | t }}</p>
+      </div>
+    </section>
+
+    <section class="feature" id="power">
+      <div class="txt">
+        <h2>{{ 'game.power.title' | t }}</h2>
+        <p>{{ 'game.power.text' | t }}</p>
+      </div>
+      <div class="panel">
+        <ul class="ladder">
+          @for (g of generators(); track g.id) {
+            <li>
+              <span class="kw"><b>{{ g.powerOutput | num: 0 }}</b> {{ 'game.power.kw' | t }}</span>
+              <span class="gname">{{ g.name }}</span>
+              @if (g.fuels.length) { <sf-items [index]="idx" [ids]="g.fuels" /> }
+            </li>
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature" id="progress">
+      <div class="txt">
+        <h2>{{ 'game.tech.title' | t }}</h2>
+        <p>{{ 'game.tech.text' | t }}</p>
+        <a class="btn btn-ghost" [routerLink]="['/', i18n.lang(), 'technologies']">{{ 'game.tech.link' | t }} <span class="arrow">→</span></a>
+      </div>
+      <div class="panel">
+        <ul class="trees">
+          @for (t of trees(); track t.id) {
+            <li [style.--tc]="t.color"><span class="tname">{{ t.name }}</span><span class="tcount">{{ 'game.tech.count' | t: { n: t.count } }}</span></li>
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature" id="space">
+      <div class="txt">
+        <h2>{{ 'game.space.title' | t }}</h2>
+        <p>{{ 'game.space.text' | t }}</p>
+      </div>
+      <div class="panel">
+        <ul class="ships">
+          @for (s of idx.data.ships; track s.id) {
+            <li [style.--bc]="s.color"><span class="sname">{{ s.name }}</span><span class="smeta">{{ 'game.space.cargo' | t: { n: s.cargoSlots } }}</span></li>
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature" id="probes">
+      <div class="txt">
+        <h2>{{ 'game.probes.title' | t }}</h2>
+        <p>{{ 'game.probes.text' | t }}</p>
+      </div>
+      <div class="panel">
+        <ul class="ships">
+          @for (p of idx.data.probes; track p.id) {
+            <li [style.--bc]="idx.data.items[p.id]?.color ?? '#888'"><span class="sname">{{ p.name }}</span><span class="smeta">{{ 'game.space.cargo' | t: { n: p.cargoSlots } }}</span></li>
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature" id="coop">
+      <div class="txt">
+        <h2>{{ 'game.coop.title' | t }}</h2>
+        <p>{{ 'game.coop.text' | t }}</p>
+      </div>
+      <div class="panel coop">
+        <span class="big">2–50</span>
+        <span class="label">{{ 'home.stat.players' | t }}</span>
+      </div>
+    </section>
+  </div>
+
+  <section class="wrap section" id="controls">
+    <h2 class="section-title">{{ 'game.controls.title' | t }}</h2>
+    <p class="section-lede">{{ 'game.controls.note' | t }}</p>
+    <div class="table-scroll">
+      <table class="data">
+        <thead><tr><th scope="col">{{ 'game.controls.key' | t }}</th><th scope="col">{{ 'game.controls.action' | t }}</th></tr></thead>
+        <tbody>
+          @for (c of controls; track c.action) {
+            <tr>
+              <td class="keys">@for (k of c.keys; track k) {<kbd>{{ keyName(k) }}</kbd>}</td>
+              <td>{{ c.action | t }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+} @else if (index() === null) {
+  <p class="wrap state">{{ 'common.error' | t }}</p>
+} @else {
+  <p class="wrap state">{{ 'common.loading' | t }}</p>
+}

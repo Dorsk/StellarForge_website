@@ -1,0 +1,49 @@
+<header class="wrap page-head">
+  <p class="eyebrow">{{ 'atlas.planets' | t: { n: index()?.data?.planets?.length ?? '…' } }}</p>
+  <h1 class="page-title">{{ 'atlas.title' | t }}</h1>
+  <p class="lede">{{ 'atlas.lede' | t }}</p>
+  @if (i18n.lang() === 'en') { <p class="note">{{ 'common.frenchOnly' | t }}</p> }
+</header>
+
+@if (index()) {
+  @for (g of groups(); track g.id) {
+    <section class="wrap group" [id]="g.id">
+      <header class="group-head">
+        <h2>{{ g.name }}</h2>
+        @if (g.visual) { <p>{{ g.visual }}</p> }
+      </header>
+      <div class="planets">
+        @for (p of g.planets; track p.id) {
+          <article class="planet" [style.--pc]="p.color">
+            <div class="orb" aria-hidden="true"></div>
+            <div class="body">
+              <h3>{{ p.name }}</h3>
+              <dl class="facts">
+                <div><dt>{{ 'atlas.gravity' | t }}</dt><dd>{{ p.gravity | num: 1 }} m/s²</dd></div>
+                <div><dt>{{ 'atlas.radius' | t }}</dt><dd>{{ p.radius | num: 0 }} m</dd></div>
+                <div><dt>{{ 'atlas.air' | t }}</dt>
+                  <dd [class.ok]="p.breathable" [class.bad]="!p.breathable">{{ (p.breathable ? 'atlas.breathable' : 'atlas.notBreathable') | t }}</dd></div>
+              </dl>
+              <p class="label">{{ 'atlas.resources' | t }}</p>
+              @if (deposits(p); as deps) {
+                @if (deps.length) {
+                  <ul class="deps">
+                    @for (d of deps; track d.item) {
+                      <li [style.--c]="d.color" [attr.data-level]="d.level"><i></i>{{ d.name }}<span>{{ d.levelName }}</span></li>
+                    }
+                  </ul>
+                } @else {
+                  <p class="none">{{ 'atlas.none' | t }}</p>
+                }
+              }
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  }
+} @else if (index() === null) {
+  <p class="wrap state">{{ 'common.error' | t }}</p>
+} @else {
+  <p class="wrap state">{{ 'common.loading' | t }}</p>
+}

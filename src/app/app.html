@@ -1,0 +1,61 @@
+<a class="skip" href="#contenu">{{ 'nav.skip' | t }}</a>
+
+<header class="site-header" [class.open]="menuOpen()">
+  <div class="bar">
+    <a class="brand" [routerLink]="['/', i18n.lang()]" aria-label="StellarForge">
+      <img src="images/logo.png" alt="StellarForge" width="1671" height="941" />
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+      @for (link of links; track link.path) {
+        <a [routerLink]="['/', i18n.lang(), link.path]" routerLinkActive="active">{{ link.key | t }}</a>
+      }
+    </nav>
+
+    <a class="lang" [href]="otherLangUrl().slice(1)" (click)="switchLang($event)" [attr.aria-label]="'nav.switchLangLabel' | t"
+       [attr.hreflang]="i18n.lang() === 'fr' ? 'en' : 'fr'">
+      <span class="lang-code">{{ i18n.lang() === 'fr' ? 'EN' : 'FR' }}</span>
+      <span class="lang-name">{{ 'nav.switchLang' | t }}</span>
+    </a>
+
+    <button type="button" class="burger" (click)="menuOpen.set(!menuOpen())" aria-controls="main-nav"
+            [attr.aria-expanded]="menuOpen()" [attr.aria-label]="(menuOpen() ? 'nav.close' : 'nav.menu') | t">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="contenu" tabindex="-1">
+  <router-outlet />
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <img src="images/logo.png" alt="StellarForge" width="1671" height="941" loading="lazy" />
+      <p>{{ 'footer.tagline' | t }}</p>
+      <p class="pill">
+        <span class="dot"></span>{{ 'footer.status' | t }}
+        @if (data.latest(); as latest) { · {{ 'common.version' | t: { v: latest.version } }} }
+      </p>
+    </div>
+    <nav aria-label="{{ 'footer.explore' | t }}">
+      <h2>{{ 'footer.explore' | t }}</h2>
+      <a [routerLink]="['/', i18n.lang(), 'game']">{{ 'nav.game' | t }}</a>
+      <a [routerLink]="['/', i18n.lang(), 'atlas']">{{ 'nav.atlas' | t }}</a>
+      <a [routerLink]="['/', i18n.lang(), 'technologies']">{{ 'nav.technologies' | t }}</a>
+      <a [routerLink]="['/', i18n.lang(), 'codex']">{{ 'nav.codex' | t }}</a>
+    </nav>
+    <nav aria-label="{{ 'footer.follow' | t }}">
+      <h2>{{ 'footer.follow' | t }}</h2>
+      <a [routerLink]="['/', i18n.lang(), 'journal']">{{ 'nav.journal' | t }}</a>
+      <a [routerLink]="['/', i18n.lang(), 'roadmap']">{{ 'nav.roadmap' | t }}</a>
+    </nav>
+    <nav aria-label="{{ 'footer.about' | t }}">
+      <h2>{{ 'footer.about' | t }}</h2>
+      <a [routerLink]="['/', i18n.lang(), 'media']">{{ 'nav.media' | t }}</a>
+      <a [routerLink]="['/', i18n.lang(), 'credits']">{{ 'nav.credits' | t }}</a>
+    </nav>
+  </div>
+  <div class="wrap foot-legal">{{ 'footer.copyright' | t: { year: year } }}</div>
+</footer>

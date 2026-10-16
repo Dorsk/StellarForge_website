@@ -1,0 +1,74 @@
+<section class="hero">
+  <div class="art">
+    <img src="images/panorama.png" width="1672" height="940" fetchpriority="high"
+         alt="StellarForge : un petit robot jaune contemple une vallée verdoyante pendant qu'un vaisseau survole les cascades." />
+  </div>
+  <div class="wrap hero-row">
+    <div class="hero-panel">
+      <p class="pill"><span class="dot"></span>{{ 'home.status' | t }}
+        @if (data.latest(); as latest) { · {{ 'common.version' | t: { v: latest.version } }} }
+      </p>
+      <h1 class="sr-only">StellarForge</h1>
+      <p class="pitch">{{ 'home.pitch' | t }}</p>
+      <div class="ctas">
+        <a class="btn btn-primary" [routerLink]="['/', i18n.lang(), 'game']">{{ 'home.ctaGame' | t }} <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" [routerLink]="['/', i18n.lang(), 'journal']">{{ 'home.ctaJournal' | t }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (stats().length) {
+  <section class="wrap">
+    <dl class="tally">
+      @for (s of stats(); track s.key) {
+        <div><dt>{{ s.key | t }}</dt><dd>{{ s.n }}</dd></div>
+      }
+    </dl>
+  </section>
+}
+
+<section class="wrap section">
+  <p class="eyebrow">{{ 'home.motto' | t }}</p>
+  <h2 class="section-title">{{ 'home.stepsTitle' | t }}</h2>
+  <p class="section-lede">{{ 'home.stepsLede' | t }}</p>
+  <ol class="steps">
+    @for (step of steps; track step.title; let i = $index) {
+      <li>
+        <span class="num">0{{ i + 1 }}</span>
+        <h3>{{ step.title | t }}</h3>
+        <p>{{ step.text | t }}</p>
+      </li>
+    }
+  </ol>
+</section>
+
+<section class="wrap section split">
+  <div class="calm">
+    <h2 class="section-title">{{ 'home.calmTitle' | t }}</h2>
+    <ul>
+      @for (c of calm; track c) { <li>{{ c | t }}</li> }
+    </ul>
+  </div>
+  @if (data.latest(); as latest) {
+    <a class="latest" [routerLink]="['/', i18n.lang(), 'journal']" [fragment]="'v' + latest.version">
+      <span class="label">{{ 'home.latestTitle' | t }}</span>
+      <span class="ver">{{ 'common.version' | t: { v: latest.version } }}</span>
+      <span class="ttl">{{ latest.title }}</span>
+      <span class="date">{{ latest.date }}</span>
+      <span class="more">{{ 'home.latestAll' | t }} <span class="arrow">→</span></span>
+    </a>
+  }
+</section>
+
+<section class="wrap">
+  <div class="dev">
+    <div>
+      <h2 class="section-title">{{ 'home.devTitle' | t }}</h2>
+      <p>{{ 'home.devText' | t }}</p>
+    </div>
+    <div class="ctas">
+      <a class="btn btn-ghost" [routerLink]="['/', i18n.lang(), 'roadmap']">{{ 'home.devRoadmap' | t }} <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
