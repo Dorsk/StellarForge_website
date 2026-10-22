@@ -201,6 +201,8 @@ export const EN: Record<TKey, string> = {
   'roadmap.done': 'Recently added',
   'roadmap.next': 'Next steps',
   'roadmap.later': 'Later',
+  'roadmap.done5.title': 'New interface',
+  'roadmap.done5.text': 'Menus on a cut-corner panel like the logo, a Tab menu linked by a single line (keys 1 to 5), and technologies shown as a solar system.',
   'roadmap.done4.title': 'Co-op chat',
   'roadmap.done4.text': 'Press Enter to write to other players. Messages fade after a few seconds and are gone after 2 minutes.',
   'roadmap.done1.title': 'Autosave',

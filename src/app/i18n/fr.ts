@@ -208,6 +208,8 @@ export const FR = {
   'roadmap.done': 'Arrivé récemment',
   'roadmap.next': 'Prochaines étapes',
   'roadmap.later': 'Plus tard',
+  'roadmap.done5.title': 'Nouvelle interface',
+  'roadmap.done5.text': 'Menus sur un panneau aux coins coupés comme le logo, menu Tab relié par une seule ligne (touches 1 à 5), et technologies présentées en système solaire.',
   'roadmap.done4.title': 'Chat en coopération',
   'roadmap.done4.text': 'Touche Entrée pour écrire aux autres joueurs. Les messages s\'estompent après quelques secondes et sont oubliés au bout de 2 minutes.',
   'roadmap.done1.title': 'Sauvegarde automatique',
