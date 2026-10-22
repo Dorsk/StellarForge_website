@@ -100,6 +100,7 @@ export const EN: Record<TKey, string> = {
   'game.key.camera': 'Camera and zoom',
   'game.key.use': 'Gather (hold), open a building or a ship',
   'game.key.inventory': 'Inventory',
+  'game.key.navPages': 'Tab menu open: switch page (inventory, technologies, build, galaxy, networks)',
   'game.key.build': 'Build',
   'game.key.demolish': 'Demolish',
   'game.key.tech': 'Technologies',

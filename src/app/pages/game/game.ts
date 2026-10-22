@@ -62,6 +62,7 @@ export class GamePage {
     { keys: ['Souris', 'Molette'], action: 'game.key.camera' },
     { keys: ['E'], action: 'game.key.use' },
     { keys: ['Tab'], action: 'game.key.inventory' },
+    { keys: ['1 – 5'], action: 'game.key.navPages' },
     { keys: ['B'], action: 'game.key.build' },
     { keys: ['X'], action: 'game.key.demolish' },
     { keys: ['T'], action: 'game.key.tech' },

@@ -122,6 +122,10 @@ for (const file of walk(dataDir)) {
 }
 const list = cls => all[cls] || [];
 const bySort = (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0) || String(a.id).localeCompare(String(b.id));
+// Agrandissement des planètes des nouvelles parties (GameConfig.planet_size_scale).
+const planetScale = list('GameConfig')[0]?.planet_size_scale || 1;
+// Planète de départ des parties (GameConfig.starting_planet_id).
+const startingPlanet = list('GameConfig')[0]?.starting_planet_id || '';
 const hex = c => Array.isArray(c)
   ? '#' + c.slice(0, 3).map(v => Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16).padStart(2, '0')).join('')
   : '#888888';
@@ -153,19 +157,20 @@ const gameData = {
   ships: list('ShipData').sort(bySort).map(s => ({
     id: s.id, name: s.display_name, description: s.description || '', shipyard: s.shipyard_id, cost: s.cost || {},
     buildTime: s.build_time || 0, cargoSlots: s.cargo_slots || 0, fuelPerTrip: s.fuel_per_trip || 0,
-    reachable: (s.reachable_planets || []).length, color: hex(s.color),
+    reachable: (s.reachable_planets || []).filter(id => !String(id).endsWith('_v2')).length, color: hex(s.color),
   })),
   probes: list('ProbeData').sort(bySort).map(p => ({
     id: p.id, name: p.display_name, cargoSlots: p.cargo_slots || 0, stackLimit: p.cargo_stack_limit || 0,
-    fuelPerTrip: p.fuel_per_trip || 0, reachable: (p.reachable_planets || []).length,
+    fuelPerTrip: p.fuel_per_trip || 0, reachable: (p.reachable_planets || []).filter(id => !String(id).endsWith('_v2')).length,
   })),
   upgrades: Object.fromEntries(list('PlayerUpgradeData').map(u => [u.id, { name: u.display_name, description: u.description || '' }])),
   planetTypes: list('PlanetTypeData').sort(bySort).map(t => ({ id: t.id, name: t.display_name, visual: t.visual || '' })),
   abundance: Object.fromEntries(list('AbundanceData').map(a => [a.id, a.display_name])),
-  planets: list('PlanetData').sort(bySort).map(p => ({
-    id: p.id, name: p.display_name, type: p.planet_type || '', radius: p.radius || 0, gravity: p.gravity || 0,
+  // Les copies _v2 sont des planètes de travail (D-204) : pas sur le site.
+  planets: list('PlanetData').filter(p => !String(p.id).endsWith('_v2')).sort(bySort).map(p => ({
+    id: p.id, name: p.display_name, type: p.planet_type || '', radius: (p.radius || 0) * planetScale, gravity: p.gravity || 0,
     breathable: !!p.breathable, color: hex(p.surface_color), deposits: p.deposits || {},
-    starting: /^planet_\d+$/.test(p.id),
+    starting: p.id === startingPlanet,
   })),
 };
 

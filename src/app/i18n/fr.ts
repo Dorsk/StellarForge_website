@@ -102,6 +102,7 @@ export const FR = {
   'game.key.camera': 'Caméra et zoom',
   'game.key.use': 'Récolter (maintenu), ouvrir un bâtiment ou un vaisseau',
   'game.key.inventory': 'Inventaire',
+  'game.key.navPages': 'Menu Tab ouvert : changer de page (inventaire, technologies, construction, galaxie, réseaux)',
   'game.key.build': 'Construire',
   'game.key.demolish': 'Démolir',
   'game.key.tech': 'Technologies',
