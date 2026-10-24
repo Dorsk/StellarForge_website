@@ -8,10 +8,16 @@ import { catchError, of } from 'rxjs';
 export type Qty = Record<string, number>;
 
 export interface Item { name: string; category: number; color: string; handHarvestable: boolean; }
-export interface TechTree { id: string; name: string; color: string; }
+export interface TechTree { id: string; name: string; color: string; milestone: boolean; }
+/** Palier (colonne de l'arbre) : cubes d'une unité de recherche au labo (vide : payé depuis l'inventaire). */
+export interface TechTier {
+  id: string; name: string; shortName: string; biome: string; color: string; cubes: Qty; unitDuration: number;
+}
 export interface Tech {
-  id: string; name: string; description: string; tree: string; prerequisites: string[]; cost: Qty;
-  buildings: string[]; recipes: string[]; ships: string[]; upgrades: string[];
+  id: string; name: string; description: string; tree: string; tier: string; prerequisites: string[]; cost: Qty;
+  /** Unités de recherche au labo (0 : payée avec `cost`). */
+  units: number; repeatable: boolean; unitsPerLevel: number;
+  buildings: string[]; recipes: string[]; ships: string[]; upgrades: string[]; bonuses: string[];
 }
 export interface BuildCategory { id: string; name: string; }
 export interface Building {
@@ -32,7 +38,8 @@ export interface Planet {
   color: string; deposits: Record<string, string>; starting: boolean;
 }
 export interface GameData {
-  items: Record<string, Item>; trees: TechTree[]; techs: Tech[]; buildCategories: BuildCategory[];
+  items: Record<string, Item>; trees: TechTree[]; tiers: TechTier[]; bonuses: Record<string, string>;
+  techs: Tech[]; buildCategories: BuildCategory[];
   buildings: Building[]; recipes: Recipe[]; ships: Ship[]; probes: Probe[]; upgrades: Record<string, Upgrade>;
   planetTypes: PlanetType[]; abundance: Record<string, string>; planets: Planet[];
 }
@@ -41,7 +48,7 @@ export interface JournalEntry { version: string; title: string; date: string; ht
 /** BuildingData.Type du jeu. */
 export const BuildingType = {
   EXTRACTOR: 0, CRAFTER: 1, STORAGE: 2, TANK: 3, SHIPYARD: 4, CONVEYOR: 5, PIPE: 6,
-  SPLITTER: 7, MERGER: 8, HABITAT: 9, GENERATOR: 10, POWER_POLE: 11, PROBE_PORT: 12,
+  SPLITTER: 7, MERGER: 8, HABITAT: 9, GENERATOR: 10, POWER_POLE: 11, PROBE_PORT: 12, RESEARCH_LAB: 13,
 } as const;
 
 /** Index de recherche construits une fois les données chargées. */
@@ -71,13 +78,10 @@ export class GameIndex {
       for (const id of t.upgrades) this.unlockedBy['u:' + id] = t;
       for (const p of t.prerequisites) (this.children[p] ||= []).push(t.id);
     }
-    // Palier = longueur de la plus longue chaîne de prérequis.
-    const depth = (id: string): number =>
-      (this.tier[id] ??= this.techById[id].prerequisites.length
-        ? 1 + Math.max(...this.techById[id].prerequisites.map(depth))
-        : 0);
-    data.techs.forEach(t => depth(t.id));
-    this.tiers = Math.max(0, ...Object.values(this.tier)) + 1;
+    // Palier = colonne donnée par le jeu (TechTierData), dans l'ordre des paliers.
+    const column = Object.fromEntries(data.tiers.map((t, i) => [t.id, i]));
+    for (const t of data.techs) this.tier[t.id] = column[t.tier] ?? 0;
+    this.tiers = data.tiers.length;
     for (const r of data.recipes) (this.recipesByBuilding[r.building] ||= []).push(r);
   }
 

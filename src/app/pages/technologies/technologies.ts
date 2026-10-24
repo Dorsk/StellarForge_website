@@ -75,7 +75,8 @@ export class TechnologiesPage {
         || t.buildings.some(b => hit(idx.buildingById[b]?.name))
         || t.recipes.some(r => hit(idx.recipeById[r]?.name))
         || t.ships.some(s => hit(idx.shipById[s]?.name))
-        || t.upgrades.some(u => hit(idx.data.upgrades[u]?.name))) set.add(t.id);
+        || t.upgrades.some(u => hit(idx.data.upgrades[u]?.name))
+        || t.bonuses.some(b => hit(idx.data.bonuses[b]))) set.add(t.id);
     }
     return set;
   });

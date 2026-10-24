@@ -137,11 +137,19 @@ const gameData = {
   items: Object.fromEntries(list('ItemData').sort(bySort).map(i => [i.id, {
     name: i.display_name, category: i.category ?? 2, color: hex(i.color), handHarvestable: !!i.hand_harvestable,
   }])),
-  trees: list('TechTreeData').sort(bySort).map(t => ({ id: t.id, name: t.display_name, color: hex(t.color) })),
+  trees: list('TechTreeData').sort(bySort).map(t => ({ id: t.id, name: t.display_name, color: hex(t.color), milestone: t.milestone !== false })),
+  // Paliers (colonnes de l'arbre, D-224) : cubes consommés par une unité de recherche.
+  tiers: list('TechTierData').sort(bySort).map(t => ({
+    id: t.id, name: t.display_name, shortName: t.short_name || '', biome: t.biome || '', color: hex(t.color),
+    cubes: t.unit_cubes || {}, unitDuration: t.unit_duration || 0,
+  })),
+  bonuses: Object.fromEntries(list('TechBonusData').map(b => [b.id, b.display_name])),
   techs: list('TechNodeData').sort(bySort).map(t => ({
-    id: t.id, name: t.display_name, description: t.description || '', tree: t.tree_id,
-    prerequisites: t.prerequisites || [], cost: t.cost || {},
+    id: t.id, name: t.display_name, description: t.description || '', tree: t.tree_id, tier: t.tier_id || '',
+    prerequisites: t.prerequisites || [], cost: t.cost || {}, units: t.research_units || 0,
+    repeatable: !!t.repeatable, unitsPerLevel: t.units_per_level || 0,
     buildings: t.unlock_buildings || [], recipes: t.unlock_recipes || [], ships: t.unlock_ships || [], upgrades: t.unlock_upgrades || [],
+    bonuses: t.unlock_bonuses || [],
   })),
   buildCategories: list('BuildCategoryData').sort(bySort).map(c => ({ id: c.id, name: c.display_name })),
   buildings: list('BuildingData').sort(bySort).map(b => ({

@@ -28,7 +28,11 @@
 .tier-h {
   position: sticky; top: 0; z-index: 2; background: color-mix(in srgb, var(--void) 88%, transparent);
   font: 600 10.5px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); padding: 8px 0 6px;
+  display: flex; flex-direction: column; gap: 2px; border-top: 2px solid var(--tc, transparent);
 }
+.tier-h strong { font: 600 14px var(--f-body); letter-spacing: 0; text-transform: none; color: var(--ink); }
+.tier-h .biome { letter-spacing: .04em; text-transform: none; font-weight: 400; }
+.research { font-size: 14px; color: var(--ink-dim); }
 .lane-bg {
   grid-column: 1 / -1; border-top: 1px dashed color-mix(in srgb, var(--tc) 26%, transparent);
   background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 8%, transparent), transparent 80%);
