@@ -66,13 +66,19 @@ export class GamePage {
     { keys: ['B'], action: 'game.key.build' },
     { keys: ['X'], action: 'game.key.demolish' },
     { keys: ['T'], action: 'game.key.tech' },
-    { keys: ['C'], action: 'game.key.map' },
+    { keys: ['M'], action: 'game.key.map' },
     { keys: ['G'], action: 'game.key.boots' },
+    { keys: ['R'], action: 'game.key.rotate' },
+    { keys: ['P'], action: 'game.key.autopilot' },
+    { keys: ['J'], action: 'game.key.players' },
+    { keys: ['Entrée'], action: 'game.key.chat' },
+    { keys: ['H'], action: 'game.key.help' },
     { keys: ['F5', 'F9'], action: 'game.key.save' },
   ];
+  /** Touches physiques du jeu (project.godot), nommées en AZERTY puis en QWERTY. */
   private readonly keyNames: Record<string, [string, string]> = {
     Espace: ['Espace', 'Space'], Maj: ['Maj', 'Shift'], Souris: ['Souris', 'Mouse'], Molette: ['Molette', 'Wheel'],
-    Z: ['Z', 'W'], Q: ['Q', 'A'],
+    Entrée: ['Entrée', 'Enter'], Z: ['Z', 'W'], Q: ['Q', 'A'], M: ['M', ';'],
   };
   protected keyName(k: string): string {
     const names = this.keyNames[k];
