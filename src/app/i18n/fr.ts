@@ -214,7 +214,7 @@ export const FR = {
   'roadmap.next': 'Prochaines étapes',
   'roadmap.later': 'Plus tard',
   'roadmap.done7.title': 'Nouveaux éléments graphiques',
-  'roadmap.done7.text': 'Chaque objet a son modèle 3D au lieu d\'un cube de couleur : lingots, bobines, bouteilles de gaz, puces, moteurs, et des cubes de recherche qui brillent. Le chantier spatial, le chantier mégaspatial, le port de sondes et le labo de recherche ont aussi leur modèle. Des formes simples et légères, pour une usine toujours fluide.',
+  'roadmap.done7.text': 'Chaque objet a son modèle 3D au lieu d\'un cube de couleur : lingots, bobines, bouteilles de gaz, puces, moteurs, et des cubes de recherche qui brillent. Le chantier spatial, le chantier mégaspatial, le port de sondes et le labo de recherche ont aussi leur modèle, et les cinq usines un nouveau modèle animé quand elles travaillent. Des formes simples et légères, pour une usine toujours fluide.',
   'roadmap.done6.title': 'Technologies en paliers',
   'roadmap.done6.text': 'Un palier par type de planète, recherché au labo avec des cubes faits de ses ressources : chaque palier demande de nouvelles lignes de sondes. Améliorations des foreuses, usines, convoyeurs et sondes, jusqu\'à l\'infini.',
   'roadmap.done5.title': 'Nouvelle interface',
