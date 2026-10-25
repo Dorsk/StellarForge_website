@@ -62,11 +62,16 @@ import { GameDataService } from '../../data/game-data';
         <div class="assets" [class.single]="group.length === 1">
           @for (shot of group; track shot.file; let first = $first) {
             <figure class="asset" [class.wide]="first && group.length > 1">
-              <a class="shot-link" [href]="'images/screens/' + shot.file" target="_blank" rel="noopener">
-                <img [src]="'images/screens/' + shot.file" [width]="shot.w" [height]="shot.h" loading="lazy" [alt]="shot.caption | t" />
-              </a>
-              <figcaption><span>{{ shot.caption | t }} · {{ shot.w }} × {{ shot.h }}</span>
-                <a class="btn btn-ghost small" [href]="'images/screens/' + shot.file" [download]="'stellarforge-' + shot.file.replace('-logo', '')">{{ 'common.download' | t }}</a></figcaption>
+              @if (shot.video; as video) {
+                <video [src]="'images/screens/' + video" [poster]="'images/screens/' + shot.file" [width]="shot.w" [height]="shot.h"
+                  autoplay muted loop playsinline preload="metadata" [attr.aria-label]="shot.caption | t"></video>
+              } @else {
+                <a class="shot-link" [href]="'images/screens/' + shot.file" target="_blank" rel="noopener">
+                  <img [src]="'images/screens/' + shot.file" [width]="shot.w" [height]="shot.h" loading="lazy" [alt]="shot.caption | t" />
+                </a>
+              }
+              <figcaption><span>{{ shot.caption | t }} · {{ shot.w }} × {{ shot.h }}{{ shot.video ? ' · MP4' : '' }}</span>
+                <a class="btn btn-ghost small" [href]="'images/screens/' + (shot.video ?? shot.file)" [download]="'stellarforge-' + (shot.video ?? shot.file).replace('-logo', '')">{{ 'common.download' | t }}</a></figcaption>
             </figure>
           }
         </div>
@@ -77,7 +82,7 @@ import { GameDataService } from '../../data/game-data';
     .assets { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
     .asset { margin: 0; background: var(--hull); border: 1px solid var(--rule); display: grid; grid-template-rows: 1fr auto; min-width: 0; }
     .asset.wide { grid-row: span 2; }
-    .asset img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16 / 9; }
+    .asset img, .asset video { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16 / 9; }
     .logo-bg { background: radial-gradient(circle at 50% 50%, #12305a, var(--void) 70%); display: grid; place-items: center; padding: 10px; }
     .logo-bg img { object-fit: contain; aspect-ratio: 1671 / 600; }
     figcaption { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; padding: 10px 14px; font: 400 12.5px var(--f-mono); color: var(--ink-dim); border-top: 1px solid var(--rule); }
@@ -107,13 +112,15 @@ export class MediaPage {
   protected readonly i18n = inject(I18n);
   protected readonly data = inject(GameDataService);
   protected readonly copied = signal<TKey | null>(null);
-  /** Même mise en page que le haut de la page : une grande image et deux petites à droite. */
-  protected readonly shotGroups: { file: string; w: number; h: number; caption: TKey }[][] = [
+  /** Même mise en page que le haut de la page : une grande image et deux petites à droite.
+   *  `video` : vidéo en boucle à la place de l'image (`file` devient son affiche). */
+  protected readonly shotGroups: { file: string; video?: string; w: number; h: number; caption: TKey }[][] = [
     [
       { file: 'sondes-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.probes' },
       { file: 'decollage-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.takeoff' },
       { file: 'nuit-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.night' },
     ],
+    [{ file: 'sondes-logo-video.jpg', video: 'sondes-logo.mp4', w: 2560, h: 1440, caption: 'media.shot.probes' }],
     [
       { file: 'carte-galaxie-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.map' },
       { file: 'usine-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.factory' },
