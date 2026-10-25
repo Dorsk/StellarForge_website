@@ -121,6 +121,7 @@ export class MediaPage {
       { file: 'nuit-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.night' },
     ],
     [{ file: 'sondes-logo-video.jpg', video: 'sondes-logo.mp4', w: 2560, h: 1440, caption: 'media.shot.probes' }],
+    [{ file: 'flotte-logo-video.jpg', video: 'flotte-logo.mp4', w: 2560, h: 1440, caption: 'media.shotFleet' }],
     [
       { file: 'carte-galaxie-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.map' },
       { file: 'usine-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.factory' },
