@@ -223,6 +223,8 @@ export const FR = {
   'roadmap.done': 'Arrivé récemment',
   'roadmap.next': 'Prochaines étapes',
   'roadmap.later': 'Plus tard',
+  'roadmap.done8.title': 'Le jeu en anglais',
+  'roadmap.done8.text': 'Tout le jeu en français ou en anglais, au choix avec les drapeaux de l\'écran d\'accueil. En coopération, chacun joue dans sa langue.',
   'roadmap.done7.title': 'Nouveaux éléments graphiques',
   'roadmap.done7.text': 'Chaque objet a son modèle 3D au lieu d\'un cube de couleur : lingots, bobines, bouteilles de gaz, puces, moteurs, et des cubes de recherche qui brillent. Le chantier spatial, le chantier mégaspatial, le port de sondes et le labo de recherche ont aussi leur modèle, et les cinq usines un nouveau modèle animé quand elles travaillent. Des formes simples et légères, pour une usine toujours fluide.',
   'roadmap.done6.title': 'Technologies en paliers',

@@ -216,6 +216,8 @@ export const EN: Record<TKey, string> = {
   'roadmap.done': 'Recently added',
   'roadmap.next': 'Next steps',
   'roadmap.later': 'Later',
+  'roadmap.done8.title': 'The game in English',
+  'roadmap.done8.text': 'The whole game in French or English, picked with the flags on the home screen. In co-op, everyone plays in their own language.',
   'roadmap.done7.title': 'New graphics',
   'roadmap.done7.text': 'Every item has its own 3D model instead of a colored cube: ingots, spools, gas bottles, chips, engines, and glowing research cubes. The shipyard, megashipyard, probe port and research lab have their own models too, and the five factories get new models that animate while they work. Simple, lightweight shapes, so the factory stays smooth.',
   'roadmap.done6.title': 'Tiered technologies',
