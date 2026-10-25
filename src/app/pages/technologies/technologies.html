@@ -25,39 +25,64 @@
   </div>
 
   <div class="stage" [class.has-detail]="detail()">
-    <div class="scroller">
-      <div class="mural" #mural [class.lineage]="lit()" [class.searching]="matches()"
-           [style.grid-template-columns]="'26px repeat(' + idx.tiers + ', 184px)'"
-           [style.grid-template-rows]="'auto repeat(' + lanes().length + ', auto)'"
-           (mouseleave)="hovered.set(null)">
-        <svg class="links" [attr.width]="size().w" [attr.height]="size().h" aria-hidden="true">
-          @for (l of links(); track l.from + '>' + l.to) {
-            <path [attr.d]="l.d" [attr.stroke]="l.color" [class.lit]="lit()?.has(l.from) && lit()?.has(l.to)" />
-          }
-        </svg>
-        @for (k of tiers(); track k) {
-          @let tier = idx.data.tiers[k];
-          <div class="tier-h" [style.grid-row]="1" [style.grid-column]="k + 2" [style.--tc]="tier.color">
-            <span>{{ tier.shortName }}</span>
-            <strong>{{ tier.name }}</strong>
-            <span class="biome">{{ tier.biome }}</span>
+    <div class="scroller" #scroller [class.dragging]="dragging()"
+         (pointerdown)="onPointerDown($event, scroller)" (pointermove)="onPointerMove($event, scroller)"
+         (pointerup)="endDrag()" (pointercancel)="endDrag()">
+      @if (layout(); as lay) {
+        <!-- Comme l'écran du jeu : en-tête des paliers fixé en haut, noms des branches fixés à gauche. -->
+        <div class="mural" #mural [class.lineage]="lit()" [class.searching]="matches()"
+             [style.grid-template-columns]="laneWidth + 'px ' + (lay.width - laneWidth) + 'px'"
+             [style.grid-template-rows]="headerHeight + 'px ' + (lay.height - headerHeight) + 'px'"
+             (mouseleave)="hovered.set(null)">
+          <div class="corner">{{ 'tech.corner' | t }}</div>
+          <div class="head">
+            @for (c of lay.tiers; track c.tier.id; let k = $index) {
+              <div class="tier-h" [class.first]="k === 0" [style.left.px]="c.left - laneWidth" [style.width.px]="c.width" [style.--tc]="c.tier.color">
+                <span class="short">{{ c.tier.shortName }}</span>
+                <strong>{{ c.tier.name }}</strong>
+                @if (c.cube) { <span class="cube">{{ c.cube }}</span> }
+                @else { <span class="muted">{{ 'tech.paidFromInventory' | t }}</span> }
+                <span class="muted">{{ c.tier.biome }}</span>
+              </div>
+            }
           </div>
-        }
-        @for (lane of lanes(); track lane.tree.id) {
-          <div class="lane-bg" [style.grid-row]="lane.row" [style.--tc]="lane.tree.color"></div>
-          <div class="lane-label" [style.grid-row]="lane.row" [style.--tc]="lane.tree.color"><span>{{ lane.tree.name }}</span></div>
-          @for (cell of lane.cells; track cell.tier) {
-            <div class="cell" [style.grid-row]="lane.row" [style.grid-column]="cell.tier + 2">
-              @for (t of cell.techs; track t.id) {
-                <button type="button" class="tech" [id]="'t-' + t.id" [style.--tc]="lane.tree.color"
-                        [class.lit]="lit()?.has(t.id)" [class.self]="selected() === t.id"
-                        [class.match]="matches()?.has(t.id)" [attr.aria-pressed]="selected() === t.id"
-                        (click)="select(t.id)" (mouseenter)="hovered.set(t.id)" (focus)="hovered.set(null)">{{ t.name }}</button>
+          <div class="band">
+            @for (lane of lay.lanes; track lane.tree.id) {
+              <div class="lane-name" [style.top.px]="lane.top - headerHeight" [style.height.px]="lane.height" [style.--tc]="lane.tree.color">
+                <span>{{ lane.tree.name }}</span>
+                @if (!lane.tree.milestone) { <small>{{ 'tech.optional' | t }}</small> }
+              </div>
+            }
+          </div>
+          <div class="canvas">
+            @for (c of lay.tiers; track c.tier.id; let k = $index) {
+              <div class="col" [class.odd]="k % 2 === 1" [class.first]="k === 0" [style.left.px]="c.left - laneWidth" [style.width.px]="c.width"></div>
+            }
+            @for (lane of lay.lanes; track lane.tree.id; let i = $index) {
+              @if (i > 0) { <div class="lane-rule" [style.top.px]="lane.top - headerHeight"></div> }
+            }
+            <svg class="links" [attr.width]="lay.width - laneWidth" [attr.height]="lay.height - headerHeight"
+                 [attr.viewBox]="laneWidth + ' ' + headerHeight + ' ' + (lay.width - laneWidth) + ' ' + (lay.height - headerHeight)" aria-hidden="true">
+              @for (l of lay.links; track l.from + '>' + l.to) {
+                <g [class.lit]="lit()?.has(l.from) && lit()?.has(l.to)">
+                  <path [attr.d]="l.d" />
+                  <circle [attr.cx]="l.endX" [attr.cy]="l.endY" r="3" />
+                </g>
               }
-            </div>
-          }
-        }
-      </div>
+            </svg>
+            @for (b of lay.boxes; track b.id) {
+              @let t = idx.techById[b.id];
+              <button type="button" class="tech" [id]="'t-' + b.id" [style.left.px]="b.x - laneWidth" [style.top.px]="b.y - headerHeight"
+                      [style.--tc]="b.color" [class.lit]="lit()?.has(b.id)" [class.self]="selected() === b.id"
+                      [class.match]="matches()?.has(b.id)" [attr.aria-pressed]="selected() === b.id"
+                      (click)="select(b.id)" (mouseenter)="hovered.set(b.id)" (focus)="hovered.set(null)">
+                <span class="name">{{ t.name }}</span>
+                <span class="status">{{ status(idx, b.id) }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
     </div>
 
     <aside class="detail" [class.open]="detail()" aria-live="polite">

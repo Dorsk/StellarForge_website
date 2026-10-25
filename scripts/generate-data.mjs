@@ -175,9 +175,11 @@ const gameData = {
   planetTypes: list('PlanetTypeData').sort(bySort).map(t => ({ id: t.id, name: t.display_name, visual: t.visual || '' })),
   abundance: Object.fromEntries(list('AbundanceData').map(a => [a.id, a.display_name])),
   // Les copies _v2 sont des planètes de travail (D-204) : pas sur le site.
+  // Sans gisements propres, une planète prend ceux de son type (comme DataRegistry dans le jeu).
   planets: list('PlanetData').filter(p => !String(p.id).endsWith('_v2')).sort(bySort).map(p => ({
     id: p.id, name: p.display_name, type: p.planet_type || '', radius: (p.radius || 0) * planetScale, gravity: p.gravity || 0,
-    breathable: !!p.breathable, color: hex(p.surface_color), deposits: p.deposits || {},
+    breathable: !!p.breathable, color: hex(p.surface_color),
+    deposits: Object.keys(p.deposits || {}).length ? p.deposits : (list('PlanetTypeData').find(t => t.id === p.planet_type)?.deposits || {}),
     starting: p.id === startingPlanet,
   })),
 };

@@ -44,7 +44,7 @@ export const FR = {
   'home.stat.techs': 'technologies',
   'home.stat.recipes': 'recettes',
   'home.stat.buildings': 'bâtiments',
-  'home.stat.planets': 'planètes nommées',
+  'home.stat.planets': 'génération procédurale',
   'home.stat.players': 'joueurs en coopération',
   'home.stepsTitle': 'De l\'épave à la galaxie',
   'home.stepsLede': 'Une partie suit toujours le même fil : s\'installer, automatiser, partir, et ne plus jamais jouer seul si on le souhaite.',
@@ -112,8 +112,8 @@ export const FR = {
 
   // Atlas
   'atlas.title': 'Atlas de la galaxie',
-  'atlas.lede': 'Chaque partie commence dans le même système : Terrane, Brumeuse et Hélia. Autour, des mondes nommés aux océans étranges, et au-delà, une galaxie qui s\'étend à mesure que vous volez.',
-  'atlas.starting': 'Système de départ',
+  'atlas.lede': 'Chaque partie commence sur Terra Nova. Autour, des mondes désertiques, glacés, volcaniques, cristallins ou aux océans étranges, et au-delà, une galaxie générée sans fin à mesure que vous volez.',
+  'atlas.starting': 'Planète de départ',
   'atlas.types': 'Familles de planètes',
   'atlas.gravity': 'Gravité',
   'atlas.radius': 'Rayon',
@@ -149,6 +149,11 @@ export const FR = {
   'tech.tag.ship': 'Vais.',
   'tech.tag.upgrade': 'Joueur',
   'tech.close': 'Fermer le détail',
+  'tech.corner': 'Branche \\ Palier',
+  'tech.paidFromInventory': 'Payée depuis l\'inventaire',
+  'tech.allCubes': 'Tous les cubes',
+  'tech.optional': 'facultative',
+  'tech.units': '{n} unités',
 
   // Codex
   'codex.title': 'Codex',
