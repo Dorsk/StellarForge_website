@@ -1,7 +1,8 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, of } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Observable, catchError, of, shareReplay, switchMap } from 'rxjs';
+import { I18n, Lang } from '../i18n/i18n';
 
 // Données générées par scripts/generate-data.mjs à partir des .tres du jeu.
 
@@ -103,7 +104,11 @@ export class GameIndex {
 @Injectable({ providedIn: 'root' })
 export class GameDataService {
   private readonly http = inject(HttpClient);
-  private readonly raw = toSignal(this.http.get<GameData>('data/game-data.json').pipe(catchError(() => of(null))));
+  private readonly files: Partial<Record<Lang, Observable<GameData | null>>> = {};
+  /** Textes du jeu dans la langue du site (game-data.en.json : traduction de locale/en.po). */
+  private readonly raw = toSignal(toObservable(inject(I18n).lang).pipe(switchMap(lang => this.files[lang] ??=
+    this.http.get<GameData>(lang === 'en' ? 'data/game-data.en.json' : 'data/game-data.json')
+      .pipe(catchError(() => of(null)), shareReplay(1)))));
   private readonly journalRaw = toSignal(
     this.http.get<{ versions: JournalEntry[] }>('data/journal.json').pipe(catchError(() => of({ versions: [] }))),
   );

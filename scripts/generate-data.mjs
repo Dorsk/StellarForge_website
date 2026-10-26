@@ -5,6 +5,7 @@
 //
 // Produit :
 //   public/data/game-data.json   technologies, bâtiments, recettes, matières, vaisseaux, planètes
+//   public/data/game-data.en.json  la même chose, textes traduits par locale/en.po
 //   public/data/journal.json     notes de mise à jour (docs/patch-notes.md)
 //   public/images/*.png          logo et panorama du menu
 import fs from 'node:fs';
@@ -185,6 +186,47 @@ const gameData = {
 };
 
 // ---------------------------------------------------------------------------
+// game-data.en.json : les identifiants du .po sont les textes français du jeu
+
+function readPo(file) {
+  const text = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
+  // Chaînes du .po : mêmes échappements que JSON (\n, \", \\), éventuellement sur plusieurs lignes.
+  const join = q => q.trim().split('\n').map(s => JSON.parse(s)).join('');
+  const map = new Map();
+  for (const block of text.split(/\n\s*\n/)) {
+    const m = /^msgid ((?:".*"\n?)+)msgstr ((?:".*"\n?)+)/m.exec(block);
+    if (!m) continue;
+    const id = join(m[1]), str = join(m[2]);
+    if (id && str) map.set(id, str);
+  }
+  return map;
+}
+
+const enPo = path.join(gameRoot, 'locale', 'en.po');
+const en = fs.existsSync(enPo) ? readPo(enPo) : new Map();
+const missing = new Set();
+const tr = s => {
+  if (!s) return s;
+  const t = en.get(s);
+  if (t === undefined) missing.add(s);
+  return t ?? s;
+};
+const TEXT_KEYS = new Set(['name', 'shortName', 'description', 'biome']);
+function translate(v, key) {
+  if (typeof v === 'string') return TEXT_KEYS.has(key) ? tr(v) : v;
+  if (Array.isArray(v)) return v.map(x => translate(x));
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, translate(x, k)]));
+  return v;
+}
+const gameDataEn = {
+  ...translate({ ...gameData, planets: [] }),
+  bonuses: Object.fromEntries(Object.entries(gameData.bonuses).map(([k, v]) => [k, tr(v)])),
+  abundance: Object.fromEntries(Object.entries(gameData.abundance).map(([k, v]) => [k, tr(v)])),
+  // Noms propres : le jeu ne traduit pas les planètes.
+  planets: gameData.planets,
+};
+
+// ---------------------------------------------------------------------------
 // journal.json : une entrée par « ## Version x.y.z — Titre »
 
 const notes = fs.readFileSync(path.join(gameRoot, 'docs', 'patch-notes.md'), 'utf8').replace(/\r\n/g, '\n');
@@ -206,6 +248,7 @@ for (const chunk of notes.split(/\n(?=## )/)) {
 const out = path.join(siteRoot, 'public', 'data');
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'game-data.json'), JSON.stringify(gameData));
+fs.writeFileSync(path.join(out, 'game-data.en.json'), JSON.stringify(gameDataEn));
 fs.writeFileSync(path.join(out, 'journal.json'), JSON.stringify({ versions }));
 
 const img = path.join(siteRoot, 'public', 'images');
@@ -216,4 +259,5 @@ fs.copyFileSync(path.join(gameRoot, 'assets', 'ui', 'panorama_accueil.png'), pat
 console.log(`Jeu : ${gameRoot}`);
 console.log(`  ${gameData.techs.length} technologies, ${gameData.buildings.length} bâtiments, ${gameData.recipes.length} recettes,`
   + ` ${Object.keys(gameData.items).length} matières, ${gameData.planets.length} planètes`);
+console.log(`  ${en.size} traductions anglaises` + (missing.size ? `, ${missing.size} textes sans traduction : ${[...missing].join(' | ')}` : ''));
 console.log(`  ${versions.length} versions dans le journal (dernière : ${versions[0]?.version ?? '-'})`);

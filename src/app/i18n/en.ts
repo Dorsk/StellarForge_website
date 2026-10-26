@@ -22,7 +22,7 @@ export const EN: Record<TKey, string> = {
   'footer.copyright': '© {year} StellarForge. All rights reserved.',
   'common.loading': 'Loading game data…',
   'common.error': 'The game data could not be loaded. Please reload the page.',
-  'common.frenchOnly': 'The game is currently developed in French, so in-game names and patch notes below are shown in French.',
+  'common.frenchOnly': 'Patch notes are written in French only.',
   'common.free': 'Free',
   'common.fromStart': 'From the start',
   'common.seconds': 's',

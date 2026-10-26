@@ -1,7 +1,6 @@
 <header class="wrap page-head compact">
   <h1 class="page-title">{{ 'tech.title' | t }}</h1>
   <p class="lede">{{ 'tech.lede' | t: { n: index()?.data?.techs?.length ?? '…' } }}</p>
-  @if (i18n.lang() === 'en') { <p class="note">{{ 'common.frenchOnly' | t }}</p> }
 </header>
 
 @if (index(); as idx) {

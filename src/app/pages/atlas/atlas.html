@@ -2,7 +2,6 @@
   <p class="eyebrow">{{ 'atlas.planets' | t: { n: index()?.data?.planets?.length ?? '…' } }}</p>
   <h1 class="page-title">{{ 'atlas.title' | t }}</h1>
   <p class="lede">{{ 'atlas.lede' | t }}</p>
-  @if (i18n.lang() === 'en') { <p class="note">{{ 'common.frenchOnly' | t }}</p> }
 </header>
 
 @if (index()) {

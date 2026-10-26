@@ -96,7 +96,7 @@ export class CodexPage {
       if (!g) groups.push((g = { cat: it.category, ids: [] }));
       g.ids.push(id);
     }
-    for (const g of groups) g.ids.sort((a, b) => idx.itemName(a).localeCompare(idx.itemName(b), 'fr'));
+    for (const g of groups) g.ids.sort((a, b) => idx.itemName(a).localeCompare(idx.itemName(b), this.i18n.lang()));
     return groups.sort((a, b) => a.cat - b.cat);
   });
 
