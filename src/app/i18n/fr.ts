@@ -41,6 +41,7 @@ export const FR = {
   'home.ctaGame': 'Découvrir le jeu',
   'home.ctaJournal': 'Journal de bord',
   'home.motto': 'Explorer · Récolter · Construire · Survivre',
+  'home.travelMotto': 'De planète en planète',
   'home.stat.techs': 'technologies',
   'home.stat.recipes': 'recettes',
   'home.stat.buildings': 'bâtiments',
@@ -255,6 +256,12 @@ export const FR = {
   'roadmap.later6.text': 'Construire des véhicules pour parcourir les planètes.',
   'roadmap.later7.title': 'Sauvegarde côté invité',
   'roadmap.later7.text': 'Une copie locale de la partie pour reprendre si l\'hôte s\'en va.',
+  'roadmap.later8.title': 'Une faune paisible',
+  'roadmap.later8.text': 'Des petites créatures qui fuient, des lucioles, des oiseaux, jamais hostiles. Et une encyclopédie à remplir : faune, flore et minéraux de chaque planète.',
+  'roadmap.later9.title': 'Des jouets de mouvement',
+  'roadmap.later9.text': 'Tyrolienne entre deux pylônes, trampolines, grappin : de nouvelles façons de se déplacer, dans la veine du jetpack.',
+  'roadmap.later10.title': 'Scanner à main',
+  'roadmap.later10.text': 'Une onde qui révèle les gisements et les points d\'intérêt proches.',
 
   // Médias
   'media.title': 'Médias et presse',
@@ -271,6 +278,7 @@ export const FR = {
   'media.shot.tech': "L'arbre des technologies",
   'media.shot.map': "La carte d'une galaxie de 400 planètes",
   'media.shotFleet': 'Vingt joueurs et leurs vaisseaux rejoignent Terra Nova et son usine',
+  'media.shot.travel': "Voyage rapide de Dunaria à Terra Nova : décollage, hyperespace, puis sortie devant la planète et ses usines",
   'media.facts': 'Fiche du jeu',
   'media.fact.title': 'Titre',
   'media.fact.genre': 'Genre',

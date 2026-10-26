@@ -32,6 +32,9 @@ const COLUMNS: Column[] = [
       { title: 'roadmap.later5.title', text: 'roadmap.later5.text' },
       { title: 'roadmap.later6.title', text: 'roadmap.later6.text' },
       { title: 'roadmap.later7.title', text: 'roadmap.later7.text' },
+      { title: 'roadmap.later8.title', text: 'roadmap.later8.text' },
+      { title: 'roadmap.later9.title', text: 'roadmap.later9.text' },
+      { title: 'roadmap.later10.title', text: 'roadmap.later10.text' },
     ],
   },
 ];

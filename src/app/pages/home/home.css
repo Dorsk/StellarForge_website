@@ -22,8 +22,10 @@
 }
 .tally dt { color: var(--ink-dim); font-size: 14px; }
 
-/* Bande des sondes : vidéo du jeu en boucle, assombrie, la devise au centre. */
+/* Bandes vidéo (sondes, puis voyage rapide `.travel`) : vidéo du jeu en boucle, assombrie, une phrase au centre. */
 .probes { position: relative; height: 56vh; min-height: 340px; margin-top: 56px; overflow: hidden; display: grid; place-items: center; }
+/* Voyage rapide : la marge de la section des étapes au-dessus suffit. */
+.probes.travel { margin-top: 0; }
 .probes video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .probes::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
