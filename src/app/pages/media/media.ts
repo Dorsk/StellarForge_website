@@ -129,6 +129,7 @@ export class MediaPage {
       { file: 'technologies-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.tech' },
     ],
     [{ file: 'colonisation-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.colony' }],
+    [{ file: 'forge-logo-video.jpg', video: 'forge-logo.mp4', w: 1920, h: 1080, caption: 'media.shot.forge' }],
   ];
   protected readonly descriptions: { title: TKey; text: TKey }[] = [
     { title: 'media.short', text: 'media.shortText' },

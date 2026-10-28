@@ -270,6 +270,7 @@ export const EN: Record<TKey, string> = {
   'media.shot.map': "Map of a 400-planet galaxy",
   'media.shotFleet': 'Twenty players and their ships head for Terra Nova and its factory',
   'media.shot.travel': "Quick travel from Dunaria to Terra Nova: takeoff, hyperspace, then the exit in front of the planet and its factories",
+  'media.shot.forge': "The Stellar Forge, from its lattice skeleton to the finished station, in ten stages",
   'media.facts': 'Fact sheet',
   'media.fact.title': 'Title',
   'media.fact.genre': 'Genre',

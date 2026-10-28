@@ -278,6 +278,7 @@ export const FR = {
   'media.shot.map': "La carte d'une galaxie de 400 planètes",
   'media.shotFleet': 'Vingt joueurs et leurs vaisseaux rejoignent Terra Nova et son usine',
   'media.shot.travel': "Voyage rapide de Dunaria à Terra Nova : décollage, hyperespace, puis sortie devant la planète et ses usines",
+  'media.shot.forge': "La Forge stellaire, du squelette en treillis à la station achevée, en dix étapes",
   'media.facts': 'Fiche du jeu',
   'media.fact.title': 'Titre',
   'media.fact.genre': 'Genre',
