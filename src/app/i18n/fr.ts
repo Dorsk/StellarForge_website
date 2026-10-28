@@ -41,7 +41,6 @@ export const FR = {
   'home.ctaGame': 'Découvrir le jeu',
   'home.ctaJournal': 'Journal de bord',
   'home.motto': 'Explorer · Récolter · Construire · Survivre',
-  'home.travelMotto': 'De planète en planète',
   'home.stat.techs': 'technologies',
   'home.stat.recipes': 'recettes',
   'home.stat.buildings': 'bâtiments',

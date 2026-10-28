@@ -40,7 +40,6 @@ export const EN: Record<TKey, string> = {
   'home.ctaGame': 'Discover the game',
   'home.ctaJournal': 'Logbook',
   'home.motto': 'Explore · Collect · Build · Survive',
-  'home.travelMotto': 'From planet to planet',
   'home.stat.techs': 'technologies',
   'home.stat.recipes': 'recipes',
   'home.stat.buildings': 'buildings',
