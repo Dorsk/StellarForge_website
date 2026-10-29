@@ -223,6 +223,8 @@ export const FR = {
   'roadmap.done': 'Arrivé récemment',
   'roadmap.next': 'Prochaines étapes',
   'roadmap.later': 'Plus tard',
+  'roadmap.done9.title': 'Entrées et sorties des bâtiments',
+  'roadmap.done9.text': 'Chaque bâtiment a des bouches fixes : les entrées à l\'arrière, la sortie à l\'avant. Un anneau lumineux pour les convoyeurs, une collerette boulonnée pour les tuyaux, et on clique sur la bouche voulue. Les deux laboratoires sont deux fois plus grands.',
   'roadmap.done8.title': 'Le jeu en anglais',
   'roadmap.done8.text': 'Tout le jeu en français ou en anglais, au choix avec les drapeaux de l\'écran d\'accueil. En coopération, chacun joue dans sa langue.',
   'roadmap.done7.title': 'Nouveaux éléments graphiques',
@@ -261,6 +263,8 @@ export const FR = {
   'roadmap.later9.text': 'Tyrolienne entre deux pylônes, trampolines, grappin : de nouvelles façons de se déplacer, dans la veine du jetpack.',
   'roadmap.later10.title': 'Scanner à main',
   'roadmap.later10.text': 'Une onde qui révèle les gisements et les points d\'intérêt proches.',
+  'roadmap.later11.title': 'Pose des convoyeurs revue',
+  'roadmap.later11.text': 'Un clic dans le vide en posant un convoyeur propose trois choix : laisser le tapis là pour prendre un virage, ou y placer un répartiteur ou un fusionneur.',
 
   // Médias
   'media.title': 'Médias et presse',

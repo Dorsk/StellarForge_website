@@ -216,6 +216,8 @@ export const EN: Record<TKey, string> = {
   'roadmap.done': 'Recently added',
   'roadmap.next': 'Next steps',
   'roadmap.later': 'Later',
+  'roadmap.done9.title': 'Building inputs and outputs',
+  'roadmap.done9.text': 'Every building has fixed mouths: inputs at the back, output at the front. A glowing ring for conveyors, a bolted collar for pipes, and you click the mouth you want. Both laboratories are twice as big.',
   'roadmap.done8.title': 'The game in English',
   'roadmap.done8.text': 'The whole game in French or English, picked with the flags on the home screen. In co-op, everyone plays in their own language.',
   'roadmap.done7.title': 'New graphics',
@@ -254,6 +256,8 @@ export const EN: Record<TKey, string> = {
   'roadmap.later9.text': 'A zip line between two pylons, trampolines, a grappling hook: new ways to get around, in the spirit of the jetpack.',
   'roadmap.later10.title': 'Handheld scanner',
   'roadmap.later10.text': 'A pulse that reveals nearby deposits and points of interest.',
+  'roadmap.later11.title': 'Reworked conveyor placement',
+  'roadmap.later11.text': 'Clicking on empty ground while laying a conveyor offers three choices: leave the belt there to make a turn, or put a splitter or a merger there.',
 
   'media.title': 'Media and press',
   'media.lede': 'Official images and information to talk about the game.',
