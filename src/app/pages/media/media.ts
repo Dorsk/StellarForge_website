@@ -124,7 +124,7 @@ export class MediaPage {
     [{ file: 'flotte-logo-video.jpg', video: 'flotte-logo.mp4', w: 2560, h: 1440, caption: 'media.shotFleet' }],
     [{ file: 'voyage-logo-video.jpg', video: 'voyage-logo.mp4', w: 2560, h: 1440, caption: 'media.shot.travel' }],
     [
-      { file: 'carte-galaxie-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.map' },
+      { file: 'carte-galaxie-logo-video.jpg', video: 'carte-galaxie-logo.mp4', w: 1920, h: 1080, caption: 'media.shot.map' },
       { file: 'usine-logo.jpg', w: 2560, h: 1440, caption: 'media.shot.factory' },
       { file: 'technologies-logo.jpg', w: 1920, h: 1080, caption: 'media.shot.tech' },
     ],
