@@ -8,6 +8,8 @@ interface Column { id: string; title: TKey; items: { title: TKey; text: TKey }[]
 const COLUMNS: Column[] = [
   {
     id: 'done', title: 'roadmap.done', items: [
+      { title: 'roadmap.done11.title', text: 'roadmap.done11.text' },
+      { title: 'roadmap.done10.title', text: 'roadmap.done10.text' },
       { title: 'roadmap.done9.title', text: 'roadmap.done9.text' },
       { title: 'roadmap.done8.title', text: 'roadmap.done8.text' },
       { title: 'roadmap.done7.title', text: 'roadmap.done7.text' },
@@ -26,7 +28,7 @@ const COLUMNS: Column[] = [
   },
   {
     id: 'later', title: 'roadmap.later', items: [
-      { title: 'roadmap.later1.title', text: 'roadmap.later1.text' },
+
       { title: 'roadmap.later2.title', text: 'roadmap.later2.text' },
       { title: 'roadmap.later3.title', text: 'roadmap.later3.text' },
       { title: 'roadmap.later4.title', text: 'roadmap.later4.text' },
